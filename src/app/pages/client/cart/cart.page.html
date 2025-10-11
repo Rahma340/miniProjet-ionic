@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Panier</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let it of items">
+      <ion-label>
+        <h2>{{ it.product.name }}</h2>
+        <p>{{ it.quantity }} x {{ it.product.price }} DT</p>
+      </ion-label>
+      <!-- <ion-button color="danger" (click)="removeItem(it.product.id)">Supprimer</ion-button> -->
+    </ion-item>
+  </ion-list>
+
+  <ion-footer>
+    <ion-toolbar>
+      <ion-title> Total: {{ total }} DT </ion-title>
+      <ion-buttons slot="end">
+        <ion-button (click)="checkout()">Passer commande</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-footer>
+</ion-content>

@@ -1,0 +1,14 @@
+<ion-header><ion-toolbar><ion-title>Mes commandes</ion-title></ion-toolbar></ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let o of (orders$ | async)">
+      <ion-label>
+        <h2>Commande #{{ o.id }}</h2>
+        <p>Status: {{ o.status }}</p>
+        <p>Total: {{ o.total }} DT</p>
+      </ion-label>
+      <ion-button routerLink="/client/orders/{{o.id}}">Voir</ion-button>
+    </ion-item>
+  </ion-list>
+</ion-content>
