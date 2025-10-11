@@ -36,10 +36,9 @@ export class CartService {
     this._cart.next([]);
   }
 
-  // 🔹 Calculer le total correctement en convertissant price en number
   getTotal(): number {
     return this._cart.getValue().reduce(
-      (sum, i) => sum + parseFloat(i.product.price) * i.quantity, // parseFloat ici
+      (sum, i) => sum + parseFloat(i.product.price) * i.quantity, 
       0
     );
   }

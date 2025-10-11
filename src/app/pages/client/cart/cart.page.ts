@@ -20,19 +20,16 @@ export class CartPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    // 🔹 Récupère le panier et calcule le total
     this.cartService.cart$.subscribe(items => {
       this.items = items;
       this.total = this.calculateTotal(items);
     });
   }
 
-  // 🔹 Calcul du total avec conversion price -> number
   private calculateTotal(items: CartItem[]): number {
     return items.reduce((sum, i) => sum + parseFloat(i.product.price) * i.quantity, 0);
   }
 
-  // 🔹 Passer la commande
   async checkout() {
     const uid = this.authService.getCurrentUid();
     if (!uid) {
@@ -40,13 +37,12 @@ export class CartPage implements OnInit {
       return;
     }
 
-    // 🔹 Préparer les items pour Order
     const order: Order = {
       userId: uid,
       items: this.items.map(i => ({
         productId: i.product.id!,
         name: i.product.name,
-        price: parseFloat(i.product.price), // conversion string -> number
+        price: parseFloat(i.product.price), 
         quantity: i.quantity
       })),
       total: this.calculateTotal(this.items),
@@ -54,13 +50,11 @@ export class CartPage implements OnInit {
       date: new Date().toISOString()
     };
 
-    // 🔹 Créer la commande et vider le panier
     const orderId = await this.orderService.createOrder(order);
     await this.cartService.clearCart();
     alert('Commande placée. Référence: ' + orderId);
   }
 
-  // 🔹 Supprimer un item du panier
   removeItem(productId: string) {
     this.cartService.removeFromCart(productId);
   }

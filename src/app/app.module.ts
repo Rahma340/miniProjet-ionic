@@ -4,7 +4,7 @@ import { IonicModule } from '@ionic/angular';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { IonicStorageModule } from '@ionic/storage-angular';
-import { FirebaseModule } from './firebase.module'; // 🔹 import du module Firebase
+import { FirebaseModule } from './firebase.module'; 
 
 @NgModule({
   declarations: [AppComponent],
@@ -13,9 +13,9 @@ import { FirebaseModule } from './firebase.module'; // 🔹 import du module Fir
     IonicModule.forRoot(),
     AppRoutingModule,
     IonicStorageModule.forRoot(),
-    FirebaseModule, // 🔹 module séparé
+    FirebaseModule, 
   ],
   bootstrap: [AppComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA], // ⚡ nécessaire pour ion-app
+  schemas: [CUSTOM_ELEMENTS_SCHEMA], 
 })
 export class AppModule {}

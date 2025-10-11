@@ -7,7 +7,7 @@ import { Order } from '../models/order.model';
 export class OrderService {
   constructor(private firestore: Firestore) {}
 
-  // Crée la commande dans Firestore
+ 
   async createOrder(order: Order) {
     const col = collection(this.firestore, 'orders');
     const docRef = await addDoc(col, {
@@ -15,7 +15,6 @@ export class OrderService {
       createdAt: new Date().toISOString()
     });
 
-    // Planifier une notification locale de confirmation (immédiate)
     try {
       await LocalNotifications.schedule({
         notifications: [
@@ -27,7 +26,7 @@ export class OrderService {
         ]
       });
     } catch (e) {
-      // si plugin non disponible en web, on ignore proprement
+     
       console.warn('Notification not available', e);
     }
 

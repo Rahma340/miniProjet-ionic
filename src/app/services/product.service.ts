@@ -10,7 +10,7 @@ export class ProductService {
 
   constructor(private firestore: Firestore) {}
 
-  // Récupérer tous les produits
+
  getProducts(): Observable<Product[]> {
   const productsRef = collection(this.firestore, 'products');
   return collectionData(productsRef, { idField: 'id' }) as Observable<Product[]>;
@@ -24,10 +24,10 @@ getProductById(id: string): Observable<Product | undefined> {
 
   addProduct(product: Product) {
     const productsRef = collection(this.firestore, 'products');
-    return addDoc(productsRef, product); // pas besoin de type générique ici
+    return addDoc(productsRef, product);
   }
 
-  // Supprimer un produit par id
+ 
   deleteProduct(id: string) {
     const productRef = doc(this.firestore, `products/${id}`);
     return deleteDoc(productRef);
