@@ -1,0 +1,157 @@
+/* === HEADER === */
+ion-header {
+  .header-toolbar {
+    --background: linear-gradient(90deg, #5a67d8, #667eea);
+    --color: #fff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+
+    ion-icon {
+      font-size: 26px;
+      color: #fff;
+    }
+
+    .cart-button {
+      position: relative;
+      .cart-badge {
+        position: absolute;
+        top: 2px;
+        right: 0;
+        font-size: 10px;
+        min-width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: #ff3b30;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+}
+
+/* === PAGE === */
+.white-background {
+  --background: #fff;
+}
+
+/* === STRUCTURE PRINCIPALE === */
+.product-details-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  background: #fff;
+  padding: 24px;
+  gap: 40px;
+  border-top: 1px solid #eee;
+}
+
+/* === IMAGE À GAUCHE === */
+.image-section {
+  flex: 0 0 340px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  background: #fafafa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    border-radius: 4px;
+    transition: transform 0.3s ease;
+    cursor: zoom-in;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+}
+
+/* === INFOS À DROITE === */
+.info-section {
+  flex: 1;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  .product-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 10px;
+  }
+
+  .price-row {
+    margin-bottom: 14px;
+
+    .price {
+      font-size: 20px;
+      color: #b12704; /* Rouge typique Amazon */
+      font-weight: 600;
+    }
+  }
+
+  .description {
+    font-size: 15px;
+    color: #333;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .add-btn {
+    --background: #ffd814; /* Jaune Amazon */
+    --background-activated: #f7ca00;
+    --color: #111;
+    --border-radius: 20px;
+    font-weight: 600;
+    width: 200px;
+    height: 40px;
+    text-transform: none;
+
+    ion-icon {
+      font-size: 18px;
+      color: #111;
+    }
+  }
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .product-details-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 16px;
+  }
+
+  .image-section {
+    width: 80%;
+  }
+
+  .info-section {
+    text-align: center;
+
+    .actions {
+      justify-content: center;
+    }
+  }
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}

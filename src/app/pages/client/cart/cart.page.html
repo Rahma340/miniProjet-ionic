@@ -1,26 +1,65 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Panier</ion-title>
+  <ion-toolbar class="header">
+    <ion-title>Shopping Cart</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-list>
-    <ion-item *ngFor="let it of items">
-      <ion-label>
-        <h2>{{ it.product.name }}</h2>
-        <p>{{ it.quantity }} x {{ it.product.price }} DT</p>
-      </ion-label>
-      <!-- <ion-button color="danger" (click)="removeItem(it.product.id)">Supprimer</ion-button> -->
-    </ion-item>
-  </ion-list>
+<ion-content class="cart-page">
+  <div *ngIf="items.length > 0; else emptyCart" class="cart-container">
+    <div class="cart-items">
+      <div class="cart-item" *ngFor="let it of items">
+        <div class="item-image">
+          <img [src]="it.product.imageUrl || 'assets/img-placeholder.png'" />
+        </div>
 
-  <ion-footer>
-    <ion-toolbar>
-      <ion-title> Total: {{ total }} DT </ion-title>
-      <ion-buttons slot="end">
-        <ion-button (click)="checkout()">Passer commande</ion-button>
-      </ion-buttons>
-    </ion-toolbar>
-  </ion-footer>
+        <div class="item-details">
+          <h2>{{ it.product.name }}</h2>
+          <p class="in-stock">In Stock</p>
+
+         <div class="actions">
+  <div class="quantity-control">
+    <ion-button fill="clear" (click)="updateQuantity(it, -1)">
+      <ion-icon name="remove-outline"></ion-icon>
+    </ion-button>
+    <span>{{ it.quantity }}</span>
+    <ion-button fill="clear" (click)="updateQuantity(it, 1)">
+      <ion-icon name="add-outline"></ion-icon>
+    </ion-button>
+  </div>
+
+  <ion-button fill="clear" color="danger" (click)="removeItem(it.product.id!)" class="delete-btn">
+    <ion-icon name="trash-outline"></ion-icon>
+  </ion-button>
+</div>
+
+        </div>
+
+        <div class="item-price">
+          {{ it.product.price | number: '1.2-2' }} DT
+        </div>
+      </div>
+
+      <div class="subtotal">
+        Subtotal ({{ items.length }} {{ items.length > 1 ? 'items' : 'item' }}):
+        <strong>{{ total | number: '1.2-2' }} DT</strong>
+      </div>
+    </div>
+      <div class="checkout-container">
+    <ion-title>Total: {{ total }} DT</ion-title>
+    <ion-button expand="block" color="primary" (click)="checkout()">
+      Passer commande
+    </ion-button>
+  </div>
+  </div>
+
+  <!-- Panier vide -->
+  <ng-template #emptyCart>
+    <div class="empty">
+      <ion-icon name="cart-outline"></ion-icon>
+      <p>Your Cart is empty.</p>
+      <ion-button routerLink="/client/home" color="primary">
+        Continue shopping
+      </ion-button>
+    </div>
+  </ng-template>
 </ion-content>

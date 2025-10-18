@@ -1,0 +1,170 @@
+/* --- Header --- */
+.header {
+  --background: #fff;
+  border-bottom: 1px solid #ddd;
+  ion-title {
+    font-weight: 600;
+    color: #111;
+  }
+}
+
+/* --- Container --- */
+.cart-page {
+  --background: #eaeded;
+  padding: 16px;
+}
+
+.cart-container {
+  background: #fff;
+  padding: 20px;
+  border-radius: 4px;
+}
+
+.cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* --- Each Product --- */
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 16px;
+}
+
+.item-image img {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+}
+
+.item-details {
+  flex: 1;
+  padding: 0 20px;
+}
+
+.item-details h2 {
+  font-size: 16px;
+  font-weight: 500;
+  color: #0f1111;
+  margin-bottom: 6px;
+}
+
+.in-stock {
+  color: #007600;
+  font-size: 13px;
+}
+
+.color {
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+/* --- Actions --- */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.quantity-control {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 30px;
+  padding: 2px 8px;
+  background: #fff;
+}
+
+.quantity-control ion-button {
+  --padding-start: 0;
+  --padding-end: 0;
+  --background: transparent;
+  color: #111;
+  font-size: 18px;
+}
+
+.quantity-control span {
+  width: 25px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.action-link {
+  color: #007185;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.divider {
+  color: #ccc;
+  margin: 0 4px;
+}
+
+/* --- Price --- */
+.item-price {
+  font-size: 18px;
+  font-weight: 600;
+  color: #111;
+  white-space: nowrap;
+}
+
+/* --- Subtotal --- */
+.subtotal {
+  text-align: right;
+  font-size: 16px;
+  font-weight: 500;
+  margin-top: 20px;
+  strong {
+    font-weight: 700;
+    color: #111;
+  }
+}
+
+/* --- Empty cart --- */
+.empty {
+  text-align: center;
+  margin-top: 60px;
+  color: #555;
+
+  ion-icon {
+    font-size: 60px;
+    color: #aaa;
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: 16px;
+    margin-bottom: 15px;
+  }
+
+  ion-button {
+    --border-radius: 6px;
+    font-weight: 600;
+  }
+}
+
+.checkout-container {
+  padding: 16px;
+  text-align: center;
+
+  ion-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  ion-button {
+    --background: #ffd814;
+    --background-hover: #f7ca00;
+    color: #111;
+    font-weight: 600;
+    border-radius: 8px;
+    text-transform: none;
+  }
+}
+

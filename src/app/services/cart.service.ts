@@ -8,38 +8,65 @@ export interface CartItem {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CartService {
-  private _cart = new BehaviorSubject<CartItem[]>([]);
-  cart$ = this._cart.asObservable();
+  private cart: CartItem[] = [];
+
+  // Observables
+  private cartSubject = new BehaviorSubject<CartItem[]>([]);
+  cart$ = this.cartSubject.asObservable();
+
+  private cartCount = new BehaviorSubject<number>(0);
+  cartCount$ = this.cartCount.asObservable();
 
   constructor() {}
 
-  addToCart(product: Product, quantity = 1) {
-    const items = this._cart.getValue();
-    const index = items.findIndex(i => i.product.id === product.id);
-    if (index > -1) {
-      items[index].quantity += quantity;
+  /** ➕ Ajouter un produit au panier */
+  addToCart(product: Product, quantity: number = 1) {
+    const existing = this.cart.find((item) => item.product.id === product.id);
+    if (existing) {
+      existing.quantity += quantity;
     } else {
-      items.push({ product, quantity });
+      this.cart.push({ product, quantity });
     }
-    this._cart.next(items);
+    this.updateCart();
   }
 
+  /** ❌ Supprimer un produit du panier */
   removeFromCart(productId: string) {
-    const items = this._cart.getValue().filter(i => i.product.id !== productId);
-    this._cart.next(items);
+    this.cart = this.cart.filter((item) => item.product.id !== productId);
+    this.updateCart();
   }
 
+  /** 🧹 Vider le panier */
   clearCart() {
-    this._cart.next([]);
+    this.cart = [];
+    this.updateCart();
   }
 
-  getTotal(): number {
-    return this._cart.getValue().reduce(
-      (sum, i) => sum + parseFloat(i.product.price) * i.quantity, 
-      0
-    );
+  /** 🔁 Mettre à jour la quantité d’un article */
+  updateQuantity(productId: string, quantity: number) {
+    const index = this.cart.findIndex((i) => i.product.id === productId);
+    if (index !== -1) {
+      this.cart[index].quantity = quantity;
+      this.updateCart();
+    }
+  }
+
+  /** 🧾 Obtenir tous les articles */
+  getCartItems(): CartItem[] {
+    return this.cart;
+  }
+
+  /** 🧮 Calculer le total d’articles */
+  getTotalItems(): number {
+    return this.cart.reduce((sum, item) => sum + item.quantity, 0);
+  }
+
+  /** 🔥 Met à jour les observables */
+  private updateCart() {
+    this.cartSubject.next([...this.cart]); // met à jour les items
+    this.cartCount.next(this.getTotalItems()); // met à jour le badge
   }
 }

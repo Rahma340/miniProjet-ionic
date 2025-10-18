@@ -35,3 +35,13 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import "@ionic/angular/css/palettes/dark.system.css";
+
+.cart-button ion-icon {
+  font-size: 28px !important;
+}
+
+.cart-button .cart-badge {
+  top: 4px !important;
+  right: 0 !important;
+}
+

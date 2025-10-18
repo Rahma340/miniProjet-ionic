@@ -1,0 +1,112 @@
+<ion-content class="ion-text-center">
+  <div class="register-container">
+    <!-- 🔹 En-tête de la page -->
+    <div class="page-header">
+      <h1>Inscription</h1>
+      <h3>Créez votre compte</h3>
+    </div>
+
+    <!-- 🔹 Formulaire d'inscription -->
+    <form #registerForm="ngForm">
+
+      <!-- Nom -->
+      <ion-item>
+        <ion-label position="stacked">Nom *</ion-label>
+        <ion-input
+          [(ngModel)]="userData.nom"
+          name="nom"
+          required
+          placeholder="Votre nom"
+        ></ion-input>
+      </ion-item>
+
+      <!-- Prénom -->
+      <ion-item>
+        <ion-label position="stacked">Prénom *</ion-label>
+        <ion-input
+          [(ngModel)]="userData.prenom"
+          name="prenom"
+          required
+          placeholder="Votre prénom"
+        ></ion-input>
+      </ion-item>
+
+      <!-- Email -->
+      <ion-item>
+        <ion-label position="stacked">Email *</ion-label>
+        <ion-input
+          [(ngModel)]="userData.email"
+          name="email"
+          type="email"
+          required
+          placeholder="exemple@email.com"
+        ></ion-input>
+      </ion-item>
+
+      <!-- Mot de passe -->
+      <ion-item>
+        <ion-label position="stacked">Mot de passe *</ion-label>
+        <ion-input
+          [(ngModel)]="userData.password"
+          name="password"
+          [type]="showPassword ? 'text' : 'password'"
+          required
+          placeholder="Minimum 6 caractères"
+          (ionInput)="checkPasswordStrength()"
+        ></ion-input>
+        <ion-button slot="end" fill="clear" (click)="togglePasswordVisibility()">
+          <ion-icon [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+        </ion-button>
+      </ion-item>
+
+      <!-- Indicateur de force -->
+      <div class="password-strength" *ngIf="userData.password">
+        <ion-progress-bar
+          [value]="passwordStrength / 100"
+          [color]="getStrengthColor()"
+        ></ion-progress-bar>
+        <ion-text [color]="getStrengthColor()">
+          <small>{{ getStrengthText() }}</small>
+        </ion-text>
+      </div>
+
+      <!-- Confirmation -->
+      <ion-item>
+        <ion-label position="stacked">Confirmer le mot de passe *</ion-label>
+        <ion-input
+          [(ngModel)]="userData.confirmPassword"
+          name="confirmPassword"
+          [type]="showConfirmPassword ? 'text' : 'password'"
+          required
+        ></ion-input>
+        <ion-button slot="end" fill="clear" (click)="toggleConfirmPasswordVisibility()">
+          <ion-icon [name]="showConfirmPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+        </ion-button>
+      </ion-item>
+
+      <!-- Bouton principal -->
+      <ion-button
+        expand="block"
+        class="main-button"
+        (click)="register()"
+        [disabled]="isLoading"
+      >
+        <ion-spinner name="crescent" *ngIf="isLoading"></ion-spinner>
+        <span *ngIf="!isLoading">S'inscrire</span>
+      </ion-button>
+
+      <!-- Lien vers connexion -->
+      <div class="login-link">
+        <p>
+          Vous avez déjà un compte ?
+          <a routerLink="/login">Connectez-vous ici</a>
+        </p>
+      </div>
+
+      <!-- Message d’erreur -->
+      <ion-text color="danger" *ngIf="errorMessage">
+        <p class="error-message">{{ errorMessage }}</p>
+      </ion-text>
+    </form>
+  </div>
+</ion-content>

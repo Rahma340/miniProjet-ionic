@@ -1,0 +1,40 @@
+<ion-content class="ion-padding">
+  <div class="login-container">
+    <div class="page-header">
+      <h1>Connexion</h1>
+      <h3>Bienvenue sur votre compte</h3>
+    </div>
+
+    <form #loginForm="ngForm">
+      <ion-item>
+        <ion-label position="stacked">Email *</ion-label>
+        <ion-input [(ngModel)]="email" name="email" type="email" required placeholder="exemple@email.com"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Mot de passe *</ion-label>
+        <ion-input [(ngModel)]="password" name="password" [type]="showPassword ? 'text' : 'password'" required placeholder="Votre mot de passe"></ion-input>
+        <ion-button slot="end" fill="clear" (click)="togglePasswordVisibility()">
+          <ion-icon [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+        </ion-button>
+      </ion-item>
+
+      <div class="button-container">
+        <ion-button expand="block" class="main-button" (click)="login()" [disabled]="isLoading">
+          <ion-spinner name="crescent" *ngIf="isLoading"></ion-spinner>
+          <span *ngIf="!isLoading">Se connecter</span>
+        </ion-button>
+
+        
+      </div>
+
+      <div class="register-link">
+        <p>Pas encore de compte ? <a routerLink="/register">Inscrivez-vous ici</a></p>
+      </div>
+
+      <ion-text color="danger" *ngIf="errorMessage">
+        <p class="error-message">{{ errorMessage }}</p>
+      </ion-text>
+    </form>
+  </div>
+</ion-content>

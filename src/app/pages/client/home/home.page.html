@@ -1,26 +1,68 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>E-Shop</ion-title>
-    <ion-buttons slot="end">
-      <ion-button routerLink="/client/cart">
-        <ion-icon name="cart-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
+  <ion-toolbar class="header-toolbar">
+    <div class="header-container">
+      <!-- 🔹 Logo -->
+      <ion-title class="logo">E-Shop</ion-title>
+
+      <!-- 🔹 Barre de recherche -->
+      <ion-searchbar
+        placeholder="Rechercher un produit..."
+        debounce="150"
+        (ionInput)="onSearch($event)"
+        class="search-bar"
+      ></ion-searchbar>
+
+      <!-- 🔹 Icônes à droite -->
+      <div class="header-icons">
+        <!-- Panier -->
+        <ion-button routerLink="/client/cart" fill="clear" class="cart-button">
+          <ion-icon name="cart-outline"></ion-icon>
+          <ion-badge *ngIf="cartCount > 0" class="cart-badge">{{ cartCount }}</ion-badge>
+        </ion-button>
+
+        <!-- ✅ Si connecté -->
+        <ng-container *ngIf="isLoggedIn; else notConnected">
+          <ion-button routerLink="/client/profile" fill="clear">
+            <ion-icon name="person-outline"></ion-icon>
+          </ion-button>
+
+          <ion-button fill="clear" color="danger" (click)="logout()">
+            <ion-icon name="log-out-outline"></ion-icon>
+          </ion-button>
+        </ng-container>
+
+        <!-- 🚪 Sinon : bouton Connexion -->
+        <ng-template #notConnected>
+          <ion-button fill="clear" routerLink="/login">
+            <ion-icon name="log-in-outline"></ion-icon>
+          </ion-button>
+        </ng-template>
+      </div>
+    </div>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-grid>
-    <ion-row>
-      <ion-col size="6" *ngFor="let p of (products$ | async)">
-        <ion-card (click)="goToDetails(p)">
-          <img [src]="p.imageUrl || 'assets/img-placeholder.png'"/>
-          <ion-card-header>
-            <ion-card-title>{{ p.name }}</ion-card-title>
-            <ion-card-subtitle>{{ p.price }} DT</ion-card-subtitle>
-          </ion-card-header>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+<!-- 🔹 Contenu principal -->
+<ion-content class="home-content">
+  <div class="section" *ngFor="let cat of categories">
+    <div class="section-header">
+      <h2>{{ cat.name }}</h2>
+    </div>
+
+    <div class="products-row" *ngIf="filteredProductsByCategory[cat.slug]?.length; else noResult">
+      <div
+        class="product-card"
+        *ngFor="let p of filteredProductsByCategory[cat.slug]"
+        (click)="goToDetails(p)"
+      >
+        <img [src]="p.imageUrl || 'assets/img-placeholder.png'" alt="{{ p.name }}" />
+        <p class="name">{{ p.name }}</p>
+        <p class="price">{{ p.price }} DT</p>
+      </div>
+    </div>
+
+    <ng-template #noResult>
+      <p class="no-products">Aucun produit trouvé dans cette catégorie</p>
+    </ng-template>
+  </div>
 </ion-content>

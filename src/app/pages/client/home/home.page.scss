@@ -1,69 +1,150 @@
+/* === HEADER (type Amazon) === */
+.header-toolbar {
+  --background: linear-gradient(90deg, #1970da, #37475a);
+  color: white;
+  padding: 0;
+}
 
-ion-header {
-  ion-toolbar {
-    --background: #5A67D8; 
-    ion-title {
-      color: #fff;
-      font-weight: bold;
-    }
-    ion-button {
-      ion-icon {
-        color: #fff;
-        font-size: 24px;
-      }
-    }
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 8px;
+}
+
+.logo {
+  font-weight: 700;
+  font-size: 20px;
+  color: white;
+}
+
+.search-bar {
+  flex: 1;
+  margin: 0 10px;
+  --background: #ffffff; /* fond blanc */
+  --color: #000000; /* texte noir */
+  --placeholder-color: #888888; /* texte grisé pour le placeholder */
+  --icon-color: #555555; /* couleur de l’icône de recherche */
+  --clear-button-color: #555555; /* bouton pour effacer */
+  --border-radius: 30px;
+  height: 38px;
+
+  input {
+    color: #000 !important;
+    font-weight: 500;
   }
 }
 
 
-ion-content {
-  --padding-start: 10px;
-  --padding-end: 10px;
-  --padding-top: 10px;
-  --padding-bottom: 10px;
+.header-icons {
+  display: flex;
+  align-items: center;
+}
 
-  ion-card {
-    border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    transition: transform 0.3s, box-shadow 0.3s;
-    cursor: pointer;
-    margin-bottom: 15px;
+.cart-button {
+  position: relative;
+}
 
-    &:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
-    }
+.cart-badge {
+  position: absolute;
+  top: 4px;
+  right: 2px;
+  background: #ff9900;
+  font-size: 10px;
+  border-radius: 50%;
+  min-width: 16px;
+  height: 16px;
+  color: #000;
+  text-align: center;
+  line-height: 16px;
+}
 
-    img {
-      width: 100%;
-      height: 150px;
-      object-fit: cover;
-      border-top-left-radius: 15px;
-      border-top-right-radius: 15px;
-    }
+/* === CONTENU === */
+.home-content {
+  --background: #f3f3f3;
+  padding-bottom: 20px;
+}
 
-    ion-card-header {
-      ion-card-title {
-        font-size: 16px;
-        font-weight: bold;
-        margin-bottom: 5px;
-      }
+/* Bloc de catégorie */
+.section {
+  background: #fff;
+  margin: 10px 0;
+  padding: 10px 0;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
 
-      ion-card-subtitle {
-        font-size: 14px;
-        color: #888;
-      }
-    }
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 12px 8px 12px;
+
+  h2 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #111;
+  }
+
+  .see-more {
+    font-size: 13px;
+    color: #007185;
+    text-transform: none;
   }
 }
 
-ion-grid {
-  ion-row {
-    margin-left: 0;
-    margin-right: 0;
-    ion-col {
-      padding-left: 5px;
-      padding-right: 5px;
-    }
+/* ✅ Rangée horizontale type Amazon */
+.products-row {
+  display: flex;
+  overflow-x: auto;
+  padding: 0 10px;
+  gap: 10px;
+  scroll-behavior: smooth;
+
+  &::-webkit-scrollbar {
+    display: none;
   }
 }
+
+/* === Carte produit === */
+.product-card {
+  flex: 0 0 180px; /* ✅ largeur augmentée */
+  background: #fff;
+  border-radius: 6px;
+  text-align: center;
+  padding: 10px 8px;
+  transition: transform 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  img {
+    width: 100%;
+    height: 220px; /* ✅ image agrandie */
+    object-fit: contain;
+    margin-bottom: 8px;
+  }
+
+  .name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #222;
+    min-height: 32px;
+    margin-bottom: 3px;
+  }
+
+  .price {
+    color: #b12704;
+    font-weight: 700;
+    font-size: 15px;
+  }
+}
+.no-products {
+  text-align: center;
+  font-size: 13px;
+  color: #777;
+  padding: 10px 0;
+}
+
