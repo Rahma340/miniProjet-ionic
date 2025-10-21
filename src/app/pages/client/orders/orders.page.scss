@@ -1,0 +1,126 @@
+/* --- Header --- */
+.header {
+  --background: #fff;
+  border-bottom: 1px solid #ddd;
+
+  ion-title {
+    font-weight: 600;
+    color: #111;
+  }
+}
+
+/* --- Page container --- */
+.orders-page {
+  --background: #eaeded;
+  padding: 16px;
+}
+
+.orders-container {
+  background: #fff;
+  padding: 20px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* --- Each order block --- */
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 12px;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.order-info {
+  flex: 1;
+
+  h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #09ecec;
+    margin-bottom: 6px;
+  }
+
+  p {
+    font-size: 14px;
+    color: #09ecec;
+    margin: 4px 0;
+  }
+
+  .status span {
+    text-transform: capitalize;
+    font-weight: 600;
+  }
+
+  .status .pending {
+    color: #d17d00;
+  }
+
+  .status .completed {
+    color: #007600;
+  }
+
+  .status .cancelled {
+    color: #b00020;
+  }
+
+  .total {
+    font-weight: 600;
+    color: #09ecec;
+  }
+
+  .date {
+    font-size: 13px;
+    color: #09ecec;
+  }
+}
+
+/* --- Actions (voir/supprimer) --- */
+.order-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  ion-button {
+    --padding-start: 0;
+    --padding-end: 0;
+    --background: transparent;
+    color: #007185;
+
+    ion-icon {
+      font-size: 22px;
+    }
+  }
+
+  ion-button[color='danger'] {
+    --color: #b12704;
+  }
+}
+
+/* --- Empty state --- */
+.empty {
+  text-align: center;
+  margin-top: 60px;
+  color: #ebd2d2;
+
+  ion-icon {
+    font-size: 60px;
+    color: #aaa;
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: 16px;
+    margin-bottom: 15px;
+  }
+
+  ion-button {
+    --border-radius: 6px;
+    font-weight: 600;
+  }
+}

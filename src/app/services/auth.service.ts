@@ -21,18 +21,18 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class AuthService {
   private currentUserSubject = new BehaviorSubject<User | null>(null);
-  currentUser$ = this.currentUserSubject.asObservable(); // ✅ Observable pour suivre l'état du user
+  currentUser$ = this.currentUserSubject.asObservable();
 
   private router = inject(Router);
 
   constructor(private auth: Auth, private firestore: Firestore) {
-    // 🔹 Écoute en temps réel les changements de connexion Firebase
+    
     onAuthStateChanged(this.auth, (user) => {
       this.currentUserSubject.next(user);
     });
   }
 
-  /** 🔹 Inscription d’un utilisateur */
+ 
   async register(email: string, password: string, role: 'client' | 'admin' = 'client', displayName?: string) {
     const userCred = await createUserWithEmailAndPassword(this.auth, email, password);
     const userRef = doc(this.firestore, `users/${userCred.user.uid}`);
@@ -59,19 +59,19 @@ export class AuthService {
   async logout() {
     try {
       await signOut(this.auth);
-      this.currentUserSubject.next(null); // 🔥 met à jour l’état du user
-      this.router.navigate(['/login']); // redirige après déconnexion
+      this.currentUserSubject.next(null); 
+      this.router.navigate(['/login']); 
     } catch (error) {
       console.error('Erreur de déconnexion :', error);
     }
   }
 
-  /** 🔹 UID du user connecté */
+  
   getCurrentUid(): string | null {
     return this.auth.currentUser?.uid || null;
   }
 
-  /** 🔹 Vérifie si connecté */
+
   isLoggedIn(): boolean {
     return !!this.auth.currentUser;
   }

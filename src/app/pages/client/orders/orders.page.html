@@ -1,14 +1,36 @@
-<ion-header><ion-toolbar><ion-title>Mes commandes</ion-title></ion-toolbar></ion-header>
+<ion-header>
+  <ion-toolbar color="light" class="header-toolbar">
+    <ion-title>Mes Commandes</ion-title>
+  </ion-toolbar>
+</ion-header>
 
-<ion-content>
-  <ion-list>
-    <ion-item *ngFor="let o of (orders$ | async)">
+<ion-content class="orders-content">
+
+  <ion-list *ngIf="orders$ | async as orders; else empty" class="orders-list">
+    <ion-item *ngFor="let o of orders" lines="none" class="order-item">
       <ion-label>
-        <h2>Commande #{{ o.id }}</h2>
-        <p>Status: {{ o.status }}</p>
-        <p>Total: {{ o.total }} DT</p>
+        <h2>Commande </h2>
+        <p><strong>Status :</strong> {{ o.status }}</p>
+        <p><strong>Total :</strong> {{ o.total }} DT</p>
       </ion-label>
-      <ion-button routerLink="/client/orders/{{o.id}}">Voir</ion-button>
+
+      <div class="actions">
+          <ion-button fill="clear" color="danger" size="small" (click)="deleteOrder(o.id!)">
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-button>
+      </div>
     </ion-item>
   </ion-list>
+
+  <ng-template #empty>
+    <div class="empty-state">
+      <p>Aucune commande trouvée</p>
+      
+    </div>
+  </ng-template>
+
+        <ion-button routerLink="/client/home" color="primary">
+        Continue shopping
+      </ion-button>
+
 </ion-content>
