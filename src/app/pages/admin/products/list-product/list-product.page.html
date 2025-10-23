@@ -1,22 +1,15 @@
-<ion-header>
-  <ion-toolbar color="primary">
-    <ion-title>Liste des produits</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="addProduct()">
-        <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+
 
 <ion-content>
   <ion-grid>
     <ion-row>
       <ion-col size="12">
+        <!-- Spinner pendant le chargement -->
         @if (loading) {
           <ion-spinner name="crescent"></ion-spinner>
         }
 
+        <!-- Tableau des produits -->
         @if (!loading && products.length > 0) {
           <table class="product-table">
             <thead>
@@ -42,6 +35,11 @@
                   <td>{{ product.stock }}</td>
                   <td>{{ product.category }}</td>
                   <td>
+                    <!-- Boutons modification et suppression -->
+                      <ion-button size="small" color="warning" (click)="addProduct()">
+                      <ion-icon slot="icon-only" name="add-outline"></ion-icon>
+                    </ion-button>
+
                     <ion-button size="small" color="warning" (click)="editProduct(product.id!)">
                       <ion-icon slot="icon-only" name="pencil-outline"></ion-icon>
                     </ion-button>
@@ -55,9 +53,13 @@
           </table>
         }
 
+        <!-- État vide -->
         @if (!loading && products.length === 0) {
           <div class="empty-state">
             Aucun produit disponible
+            <ion-button (click)="addProduct()">
+              <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon>
+            </ion-button>
           </div>
         }
       </ion-col>

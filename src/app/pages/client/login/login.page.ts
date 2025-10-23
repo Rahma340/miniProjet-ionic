@@ -80,7 +80,7 @@ export class LoginPage implements OnInit {
 
       // ✅ Redirection selon le rôle
       if (role === 'admin') {
-        this.router.navigate(['/admin/list-product']);
+        this.router.navigate(['/admin']);
       } else {
         this.router.navigate(['/client/home']);
       }

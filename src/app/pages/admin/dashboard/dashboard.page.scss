@@ -1,0 +1,122 @@
+.dashboard-content {
+  .dashboard-container {
+    display: flex;
+    min-height: 100vh;
+
+    .sidebar {
+      width: 280px;
+      background: var(--ion-color-light);
+      border-right: 1px solid var(--ion-color-light-shade);
+      padding: 16px 0;
+
+      ion-item {
+        --background: transparent;
+        --border-radius: 8px;
+        margin: 4px 12px;
+        
+        &.active {
+          --background: var(--ion-color-primary);
+          --color: white;
+          
+          ion-icon {
+            color: white;
+          }
+        }
+        
+        ion-icon {
+          color: var(--ion-color-medium);
+        }
+        
+        ion-badge {
+          margin-left: auto;
+        }
+      }
+    }
+
+    .main-dashboard {
+      flex: 1;
+      padding: 20px;
+      background: var(--ion-background-color);
+      
+      .dashboard-home {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 16px;
+        margin-bottom: 24px;
+
+        .stat-card {
+          text-align: center;
+          transition: transform 0.2s ease;
+
+          &:hover {
+            transform: translateY(-2px);
+          }
+
+          ion-icon {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+          }
+
+          h3 {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 8px 0;
+            color: var(--ion-color-dark);
+          }
+
+          p {
+            color: var(--ion-color-medium);
+            margin: 0;
+          }
+        }
+      }
+
+      .quick-actions {
+        margin-bottom: 24px;
+
+        .actions-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          gap: 12px;
+        }
+      }
+
+      .recent-activity {
+        ion-item {
+          --padding-start: 0;
+          --inner-padding-end: 0;
+        }
+      }
+    }
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .dashboard-container {
+      flex-direction: column;
+
+      .sidebar {
+        width: 100%;
+        order: 2;
+      }
+
+      .main-dashboard {
+        order: 1;
+        padding: 16px;
+        
+        .stats-grid {
+          grid-template-columns: 1fr;
+        }
+        
+        .actions-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    }
+  }
+}

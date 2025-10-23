@@ -148,67 +148,78 @@ cancel() {
     if (control?.hasError('min')) return 'Valeur doit être positive';
     return '';
   }
+  
 
   // --------------------------- GESTION DES IMAGES ---------------------------
 async uploadImage() {
+  const buttons: any[] = [];
+
   if (this.isMobile) {
-    const actionSheet = await this.actionSheetController.create({
-      header: 'Ajouter une photo',
-      buttons: [
-        {
-          text: 'Prendre une photo',
-          icon: 'camera',
-          handler: async () => {
-            try {
-              const img = await this.photoSer.takePicture();
-              if (img) {
-                // ⚡ Mettre l'image dans le formulaire
-                this.productForm.patchValue({ image: img });
-                this.cdr.detectChanges();
-                await this.showToast('Photo capturée avec succès', 'success');
-              }
-            } catch {
-              await this.showToast("Vous n'avez pas pris de photo", 'danger');
+    // Mobile : caméra ou galerie
+    buttons.push(
+      {
+        text: 'Prendre une photo',
+        icon: 'camera',
+        handler: async () => {
+          try {
+            const img = await this.photoSer.takePicture();
+            if (img) {
+              this.productForm.patchValue({ image: img });
+              this.cdr.detectChanges();
+              await this.showToast('Photo capturée avec succès', 'success');
             }
+          } catch {
+            await this.showToast("Vous n'avez pas pris de photo", 'danger');
           }
-        },
-        {
-          text: 'Choisir depuis la galerie',
-          icon: 'image',
-          handler: async () => {
-            try {
-              const tabImages = await this.photoSer.selectionnerPhotos();
-              if (tabImages?.photos?.length) {
-                const img = tabImages.photos[0].webPath; // ⚡ Utiliser webPath pour affichage dans <img>
-                this.productForm.patchValue({ image: img });
-                this.cdr.detectChanges();
-                await this.showToast('Image sélectionnée avec succès', 'success');
-              }
-            } catch {
-              await this.showToast("Erreur lors de la sélection", 'danger');
+        }
+      },
+      {
+        text: 'Choisir depuis la galerie',
+        icon: 'image',
+        handler: async () => {
+          try {
+            const tabImages = await this.photoSer.selectionnerPhotos();
+            if (tabImages?.photos?.length) {
+              const img = tabImages.photos[0].webPath;
+              this.productForm.patchValue({ image: img });
+              this.cdr.detectChanges();
+              await this.showToast('Image sélectionnée avec succès', 'success');
             }
+          } catch {
+            await this.showToast("Erreur lors de la sélection", 'danger');
           }
-        },
-        { text: 'Annuler', icon: 'close-outline', role: 'cancel' }
-      ]
-    });
-    await actionSheet.present();
+        }
+      }
+    );
   } else {
-    // PC / Desktop
-    const actionSheet = await this.actionSheetController.create({
-      header: 'Ajouter une photo',
-      buttons: [
-        {
-          text: 'Importer depuis PC',
-          icon: 'cloud-upload-outline',
-          handler: () => this.fileInput.nativeElement.click()
-        },
-        { text: 'Annuler', icon: 'close-outline', role: 'cancel' }
-      ]
-    });
-    await actionSheet.present();
+    // Desktop : webcam ou importer depuis PC
+    buttons.push(
+      {
+        text: 'Prendre une photo',
+        icon: 'camera-outline',
+        handler: () => {
+          this.openWebcam(); // ouvre le modal webcam
+        }
+      },
+      {
+        text: 'Importer depuis PC',
+        icon: 'cloud-upload-outline',
+        handler: () => this.fileInput.nativeElement.click()
+      }
+    );
   }
+
+  // Annuler pour tous
+  buttons.push({ text: 'Annuler', icon: 'close-outline', role: 'cancel' });
+
+  const actionSheet = await this.actionSheetController.create({
+    header: 'Ajouter une photo',
+    buttons
+  });
+
+  await actionSheet.present();
 }
+
 
 
   // --------------------------- WEBCAM ---------------------------

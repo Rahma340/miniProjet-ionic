@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { DashboardPage } from './pages/admin/dashboard/dashboard.page';
 
 const routes: Routes = [
   // 🔹 Redirection par défaut
@@ -8,30 +9,27 @@ const routes: Routes = [
   // =============================
   // 🔸 ADMIN ROUTES
   // =============================
-  {
-    path: 'admin',
-    children: [
-      {
-        path: 'add-product',
-        loadChildren: () =>
-          import('./pages/admin/products/product/product.module').then(
-            (m) => m.ProductPageModule
-          ),
-      },
-      {
-        path: 'list-product',
-        loadChildren: () =>
-          import('./pages/admin/products/list-product/list-product.module').then(
-            (m) => m.ListProductPageModule
-          ),
-      },
-      {
-        path: '',
-        redirectTo: 'list-product',
-        pathMatch: 'full',
-      },
-    ],
-  },
+ {
+  path: 'admin',
+  component: DashboardPage,
+  children: [
+    {
+      path: 'list-product',
+      loadChildren: () => import('./pages/admin/products/list-product/list-product.module').then(m => m.ListProductPageModule)
+    },
+    {
+      path: 'add-product',
+      loadChildren: () => import('./pages/admin/products/product/product.module').then(m => m.ProductPageModule)
+    },
+    
+    {
+      path: '',
+      redirectTo: 'list-product',
+      pathMatch: 'full'
+    }
+  ]
+}
+,
 
   // =============================
   // 🔸 CLIENT ROUTES
@@ -79,6 +77,11 @@ const routes: Routes = [
         (m) => m.CategoryProductPageModule
       ),
   },
+  {
+    path: 'dashboard',
+    loadChildren: () => import('./pages/admin/dashboard/dashboard.module').then( m => m.DashboardPageModule)
+  },
+
 ];
 
 @NgModule({

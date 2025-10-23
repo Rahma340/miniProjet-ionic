@@ -1,0 +1,183 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Admin Dashboard</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="dashboard-content">
+  <div class="dashboard-container">
+    <!-- Sidebar navigation -->
+    <ion-list class="sidebar">
+      <ion-item 
+        routerLink="/admin/dashboard" 
+        routerDirection="root"
+        [class.active]="isActive('/admin/dashboard')">
+        <ion-icon slot="start" name="grid-outline"></ion-icon>
+        <ion-label>Tableau de Bord</ion-label>
+      </ion-item>
+      
+      <ion-item 
+        routerLink="/admin/list-product" 
+        routerDirection="forward"
+        [class.active]="isActive('/admin/list-product')">
+        <ion-icon slot="start" name="cube-outline"></ion-icon>
+        <ion-label>Liste des produits</ion-label>
+      </ion-item>
+      
+      <ion-item 
+        routerLink="/admin/add-product" 
+        routerDirection="forward"
+        [class.active]="isActive('/admin/add-product')">
+        <ion-icon slot="start" name="add-circle-outline"></ion-icon>
+        <ion-label>Ajouter un produit</ion-label>
+      </ion-item>
+      
+      <ion-item 
+        routerLink="/admin/orders" 
+        routerDirection="forward"
+        [class.active]="isActive('/admin/orders')">
+        <ion-icon slot="start" name="document-text-outline"></ion-icon>
+        <ion-label>Commandes</ion-label>
+        <ion-badge slot="end" color="danger">12</ion-badge>
+      </ion-item>
+      
+      <ion-item 
+        routerLink="/admin/users" 
+        routerDirection="forward"
+        [class.active]="isActive('/admin/users')">
+        <ion-icon slot="start" name="people-outline"></ion-icon>
+        <ion-label>Utilisateurs</ion-label>
+      </ion-item>
+      
+      <ion-item 
+        routerLink="/admin/categories" 
+        routerDirection="forward"
+        [class.active]="isActive('/admin/categories')">
+        <ion-icon slot="start" name="folder-outline"></ion-icon>
+        <ion-label>Catégories</ion-label>
+      </ion-item>
+      
+      <ion-item 
+        routerLink="/admin/stats" 
+        routerDirection="forward"
+        [class.active]="isActive('/admin/stats')">
+        <ion-icon slot="start" name="stats-chart-outline"></ion-icon>
+        <ion-label>Statistiques</ion-label>
+      </ion-item>
+    </ion-list>
+
+    <!-- Main dashboard content -->
+    <div class="main-dashboard">
+      <!-- Dashboard Home Content -->
+      @if (currentRoute === '/admin/dashboard') {
+        <div class="dashboard-home">
+          <!-- Statistics Cards -->
+          <div class="stats-grid">
+            <ion-card class="stat-card">
+              <ion-card-content>
+                <ion-icon name="cube-outline" color="primary"></ion-icon>
+                <h3>156</h3>
+                <p>Produits en stock</p>
+              </ion-card-content>
+            </ion-card>
+            
+            <ion-card class="stat-card">
+              <ion-card-content>
+                <ion-icon name="document-text-outline" color="success"></ion-icon>
+                <h3>24</h3>
+                <p>Commandes aujourd'hui</p>
+              </ion-card-content>
+            </ion-card>
+            
+            <ion-card class="stat-card">
+              <ion-card-content>
+                <ion-icon name="people-outline" color="warning"></ion-icon>
+                <h3>1,234</h3>
+                <p>Utilisateurs actifs</p>
+              </ion-card-content>
+            </ion-card>
+            
+            <ion-card class="stat-card">
+              <ion-card-content>
+                <ion-icon name="cash-outline" color="danger"></ion-icon>
+                <h3>15,680 DT</h3>
+                <p>Revenu du mois</p>
+              </ion-card-content>
+            </ion-card>
+          </div>
+
+          <!-- Quick Actions -->
+          <ion-card class="quick-actions">
+            <ion-card-header>
+              <ion-card-title>Actions Rapides</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <div class="actions-grid">
+                <ion-button expand="block" routerLink="/admin/add-product" color="primary">
+                  <ion-icon slot="start" name="add-circle-outline"></ion-icon>
+                  Ajouter Produit
+                </ion-button>
+                
+                <ion-button expand="block" routerLink="/admin/orders" color="success">
+                  <ion-icon slot="start" name="document-text-outline"></ion-icon>
+                  Voir Commandes
+                </ion-button>
+                
+                <ion-button expand="block" routerLink="/admin/stats" color="warning">
+                  <ion-icon slot="start" name="stats-chart-outline"></ion-icon>
+                  Statistiques
+                </ion-button>
+                
+                <ion-button expand="block" routerLink="/admin/users" color="tertiary">
+                  <ion-icon slot="start" name="people-outline"></ion-icon>
+                  Gestion Users
+                </ion-button>
+              </div>
+            </ion-card-content>
+          </ion-card>
+
+          <!-- Recent Activity -->
+          <ion-card class="recent-activity">
+            <ion-card-header>
+              <ion-card-title>Activité Récente</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-list>
+                <ion-item>
+                  <ion-icon slot="start" name="add-circle-outline" color="success"></ion-icon>
+                  <ion-label>
+                    <h3>Nouveau produit ajouté</h3>
+                    <p>iPhone 15 Pro - Il y a 2 minutes</p>
+                  </ion-label>
+                </ion-item>
+                
+                <ion-item>
+                  <ion-icon slot="start" name="document-text-outline" color="primary"></ion-icon>
+                  <ion-label>
+                    <h3>Nouvelle commande #CMD-0012</h3>
+                    <p>Client: John Doe - Il y a 15 minutes</p>
+                  </ion-label>
+                </ion-item>
+                
+                <ion-item>
+                  <ion-icon slot="start" name="person-add-outline" color="warning"></ion-icon>
+                  <ion-label>
+                    <h3>Nouvel utilisateur inscrit</h3>
+                    <p>Sarah Smith - Il y a 1 heure</p>
+                  </ion-label>
+                </ion-item>
+              </ion-list>
+            </ion-card-content>
+          </ion-card>
+        </div>
+      } @else {
+        <router-outlet></router-outlet>
+      }
+    </div>
+  </div>
+</ion-content>
