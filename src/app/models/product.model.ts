@@ -5,4 +5,9 @@ export interface Product {
   description: string;
   category: string;
   imageUrl: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+  stock: number;
 }
+
+

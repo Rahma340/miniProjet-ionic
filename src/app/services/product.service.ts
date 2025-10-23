@@ -8,45 +8,63 @@ import {
   doc,
   docData,
   addDoc,
-  deleteDoc
+  deleteDoc,
+  updateDoc
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Product } from '../models/product.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProductService {
+  private collectionName = 'products';
+
   constructor(private firestore: Firestore) {}
 
-  // ✅ Tous les produits
+  /** 🔹 Obtenir tous les produits */
   getProducts(): Observable<Product[]> {
-    const productsRef = collection(this.firestore, 'products');
+    const productsRef = collection(this.firestore, this.collectionName);
     return collectionData(productsRef, { idField: 'id' }) as Observable<Product[]>;
   }
 
-  // ✅ Produit par ID
+  /** 🔹 Obtenir un produit par ID */
   getProductById(id: string): Observable<Product | undefined> {
-    const productRef = doc(this.firestore, `products/${id}`);
+    const productRef = doc(this.firestore, `${this.collectionName}/${id}`);
     return docData(productRef, { idField: 'id' }) as Observable<Product | undefined>;
   }
 
-  // ✅ Produits par catégorie
+  /** 🔹 Obtenir les produits par catégorie */
   getProductsByCategory(category: string): Observable<Product[]> {
-    const productsRef = collection(this.firestore, 'products');
+    const productsRef = collection(this.firestore, this.collectionName);
     const q = query(productsRef, where('category', '==', category));
     return collectionData(q, { idField: 'id' }) as Observable<Product[]>;
   }
 
-  // ✅ Ajouter un produit
+  /** 🔹 Ajouter un produit (Admin) */
   addProduct(product: Product) {
-    const productsRef = collection(this.firestore, 'products');
-    return addDoc(productsRef, product);
+    const productsRef = collection(this.firestore, this.collectionName);
+    const newProduct = {
+      ...product,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+    return addDoc(productsRef, newProduct);
   }
 
-  // ✅ Supprimer un produit
+  /** 🔹 Mettre à jour un produit existant (Admin) */
+  updateProduct(id: string, product: Partial<Product>) {
+    const productRef = doc(this.firestore, `${this.collectionName}/${id}`);
+    const updateData = {
+      ...product,
+      updatedAt: new Date().toISOString(),
+    };
+    return updateDoc(productRef, updateData);
+  }
+
+  /** 🔹 Supprimer un produit (Admin) */
   deleteProduct(id: string) {
-    const productRef = doc(this.firestore, `products/${id}`);
+    const productRef = doc(this.firestore, `${this.collectionName}/${id}`);
     return deleteDoc(productRef);
   }
 }

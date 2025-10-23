@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { CartService, CartItem } from '../../../services/cart.service';
+import { CartService } from '../../../services/cart.service';
 import { OrderService } from '../../../services/order.service';
 import { AuthService } from '../../../services/auth.service';
 import { Order } from '../../../models/order.model';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
+import { CartItem } from 'src/app/models/CartItem';
 
 @Component({
   selector: 'app-cart',

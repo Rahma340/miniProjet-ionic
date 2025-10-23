@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Product } from '../models/product.model';
+import { CartItem } from '../models/CartItem';
 
-export interface CartItem {
-  product: Product;
-  quantity: number;
-}
+
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +20,7 @@ export class CartService {
 
   constructor() {}
 
-  /** ➕ Ajouter un produit au panier */
+  // Ajouter un produit au panier 
   addToCart(product: Product, quantity: number = 1) {
     const existing = this.cart.find((item) => item.product.id === product.id);
     if (existing) {
@@ -33,19 +31,19 @@ export class CartService {
     this.updateCart();
   }
 
-  /** ❌ Supprimer un produit du panier */
+  // Supprimer un produit du panier 
   removeFromCart(productId: string) {
     this.cart = this.cart.filter((item) => item.product.id !== productId);
     this.updateCart();
   }
 
-  /** 🧹 Vider le panier */
+  // Vider le panier 
   clearCart() {
     this.cart = [];
     this.updateCart();
   }
 
-  /** 🔁 Mettre à jour la quantité d’un article */
+  // Mettre à jour la quantité d’un article 
   updateQuantity(productId: string, quantity: number) {
     const index = this.cart.findIndex((i) => i.product.id === productId);
     if (index !== -1) {
@@ -54,17 +52,17 @@ export class CartService {
     }
   }
 
-  /** 🧾 Obtenir tous les articles */
+  // Obtenir tous les articles 
   getCartItems(): CartItem[] {
     return this.cart;
   }
 
-  /** 🧮 Calculer le total d’articles */
+  //Calculer le total d’articles 
   getTotalItems(): number {
     return this.cart.reduce((sum, item) => sum + item.quantity, 0);
   }
 
-  /** 🔥 Met à jour les observables */
+  //Met à jour les observables 
   private updateCart() {
     this.cartSubject.next([...this.cart]); // met à jour les items
     this.cartCount.next(this.getTotalItems()); // met à jour le badge

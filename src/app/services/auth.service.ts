@@ -48,14 +48,14 @@ export class AuthService {
     return userCred.user;
   }
 
-  /** 🔹 Connexion d’un utilisateur */
+  // Connexion d’un utilisateur 
   async login(email: string, password: string) {
     const userCred = await signInWithEmailAndPassword(this.auth, email, password);
     const userDoc = await getDoc(doc(this.firestore, `users/${userCred.user.uid}`));
     return userDoc.exists() ? userDoc.data() : null;
   }
 
-  /** 🔹 Déconnexion */
+  //Déconnexion 
   async logout() {
     try {
       await signOut(this.auth);

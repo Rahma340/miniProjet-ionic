@@ -6,6 +6,11 @@ const routes: Routes = [
   { path: '', redirectTo: 'client/home', pathMatch: 'full' },
 
     {
+    path: 'admin',
+    loadChildren: () => import('./pages/admin/products/product/product.module').then( m => m.ProductPageModule)
+  },
+
+    {
     path: 'login',
     loadChildren: () =>
       import('./pages/client/login/login.module').then(m => m.LoginPageModule),
@@ -63,6 +68,14 @@ const routes: Routes = [
   {
     path: 'register',
     loadChildren: () => import('./pages/client/register/register.module').then( m => m.RegisterPageModule)
+  },
+  {
+    path: 'products',
+    loadChildren: () => import('./pages/admin/products/product/product.module').then( m => m.ProductPageModule)
+  },
+  {
+    path: 'product',
+    loadChildren: () => import('./pages/admin/products/product/product.module').then( m => m.ProductPageModule)
   },
 
   // 🔹 (Optionnel) route directe vers la page de catégorie

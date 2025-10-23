@@ -69,9 +69,9 @@ export class LoginPage implements OnInit {
       const userData = await this.firestoreService.getDocumentData('users', user.uid);
       await this.showSuccessToast(userData?.role || 'user');
 
-      // 🔹 Redirection selon le rôle
+      // Redirection selon le rôle
       if (userData?.role === 'admin') {
-        this.router.navigate(['/admin']);
+        this.router.navigate(['/admin/products']);
       } else {
         this.router.navigate(['/client/home']);
       }

@@ -15,7 +15,7 @@ export class ProductDetailsPage implements OnInit {
   product?: Product;
   relatedProducts: Product[] = [];
 
-  // ✅ Injection moderne Angular 17+
+  
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private productService = inject(ProductService);

@@ -14,7 +14,7 @@ import { Firestore, doc, setDoc, getDoc } from '@angular/fire/firestore';
 export class FirebaseAuthService {
   constructor(private auth: Auth, private firestore: Firestore) {}
 
-  /** 🔹 Inscription utilisateur avec rôle "user" par défaut */
+  
   async register(
     email: string,
     password: string,
@@ -24,19 +24,19 @@ export class FirebaseAuthService {
     const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
     const user = userCredential.user;
 
-    // Ajout Firestore
+ 
     await setDoc(doc(this.firestore, 'users', user.uid), {
       email,
       nom,
       prenom,
-      role: 'user', // 🔹 Par défaut : utilisateur normal
+      role: 'user',
       createdAt: new Date().toISOString(),
     });
 
     return userCredential;
   }
 
-  /** 🔹 Connexion */
+
   async login(email: string, password: string): Promise<UserCredential> {
     return signInWithEmailAndPassword(this.auth, email, password);
   }
