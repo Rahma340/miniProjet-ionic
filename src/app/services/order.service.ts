@@ -12,7 +12,7 @@ export class OrderService {
     const col = collection(this.firestore, 'orders');
     const docRef = await addDoc(col, {
       ...order,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toString()
     });
 
     try {

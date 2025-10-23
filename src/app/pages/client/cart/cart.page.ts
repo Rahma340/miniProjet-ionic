@@ -50,10 +50,8 @@ export class CartPage implements OnInit {
   }
 
   /** 🔹 Passer commande ou rediriger */
-  async checkout() {
-    const uid = this.authService.getCurrentUid();
-
-    // ⚠️ Si non connecté → toast + redirection vers register
+ async checkout() {
+  this.authService.getCurrentUid().subscribe(async uid => {
     if (!uid) {
       const toast = await this.toastController.create({
         message: 'Veuillez vous connecter pour passer commande 🛒',
@@ -66,10 +64,9 @@ export class CartPage implements OnInit {
       return;
     }
 
-    // ✅ Si connecté → créer la commande
     const order: Order = {
-      userId: uid,
-      items: this.items.map((i) => ({
+      userId: uid, // maintenant c'est bien un string
+      items: this.items.map(i => ({
         productId: i.product.id!,
         name: i.product.name,
         price: Number(i.product.price),
@@ -83,7 +80,6 @@ export class CartPage implements OnInit {
     const orderId = await this.orderService.createOrder(order);
     this.cartService.clearCart();
 
-    // ✅ Confirmation + redirection vers la page des commandes
     const toast = await this.toastController.create({
       message: `Commande placée avec succès ! Réf : ${orderId}`,
       duration: 2500,
@@ -93,5 +89,7 @@ export class CartPage implements OnInit {
     await toast.present();
 
     this.router.navigate(['/client/orders']);
-  }
+  });
+}
+
 }

@@ -5,55 +5,56 @@
 </ion-header>
 
 <ion-content class="cart-page">
-  <div *ngIf="items.length > 0; else emptyCart" class="cart-container">
-    <div class="cart-items">
-      <div class="cart-item" *ngFor="let it of items">
-        <div class="item-image">
-          <img [src]="it.product.imageUrl || 'assets/img-placeholder.png'" />
-        </div>
+  @if (items.length > 0) {
+    <div class="cart-container">
+      <div class="cart-items">
+        @for (it of items; track it.product.id) {
+          <div class="cart-item">
+            <div class="item-image">
+              <img [src]="it.product.imageUrl || 'assets/img-placeholder.png'" />
+            </div>
 
-        <div class="item-details">
-          <h2>{{ it.product.name }}</h2>
-          <p class="in-stock">In Stock</p>
+            <div class="item-details">
+              <h2>{{ it.product.name }}</h2>
+              <p class="in-stock">In Stock</p>
 
-         <div class="actions">
-  <div class="quantity-control">
-    <ion-button fill="clear" (click)="updateQuantity(it, -1)">
-      <ion-icon name="remove-outline"></ion-icon>
-    </ion-button>
-    <span>{{ it.quantity }}</span>
-    <ion-button fill="clear" (click)="updateQuantity(it, 1)">
-      <ion-icon name="add-outline"></ion-icon>
-    </ion-button>
-  </div>
+              <div class="actions">
+                <div class="quantity-control">
+                  <ion-button fill="clear" (click)="updateQuantity(it, -1)">
+                    <ion-icon name="remove-outline"></ion-icon>
+                  </ion-button>
+                  <span>{{ it.quantity }}</span>
+                  <ion-button fill="clear" (click)="updateQuantity(it, 1)">
+                    <ion-icon name="add-outline"></ion-icon>
+                  </ion-button>
+                </div>
 
-  <ion-button fill="clear" color="danger" (click)="removeItem(it.product.id!)" class="delete-btn">
-    <ion-icon name="trash-outline"></ion-icon>
-  </ion-button>
-</div>
+                <ion-button fill="clear" color="danger" (click)="removeItem(it.product.id!)" class="delete-btn">
+                  <ion-icon name="trash-outline"></ion-icon>
+                </ion-button>
+              </div>
+            </div>
 
-        </div>
+            <div class="item-price">
+              {{ it.product.price | number: '1.2-2' }} DT
+            </div>
+          </div>
+        }
 
-        <div class="item-price">
-          {{ it.product.price | number: '1.2-2' }} DT
+        <div class="subtotal">
+          Subtotal ({{ items.length }} {{ items.length > 1 ? 'items' : 'item' }}):
+          <strong>{{ total | number: '1.2-2' }} DT</strong>
         </div>
       </div>
-
-      <div class="subtotal">
-        Subtotal ({{ items.length }} {{ items.length > 1 ? 'items' : 'item' }}):
-        <strong>{{ total | number: '1.2-2' }} DT</strong>
+      
+      <div class="checkout-container">
+        <ion-title>Total: {{ total }} DT</ion-title>
+        <ion-button expand="block" color="primary" (click)="checkout()">
+          Passer commande
+        </ion-button>
       </div>
     </div>
-      <div class="checkout-container">
-    <ion-title>Total: {{ total }} DT</ion-title>
-    <ion-button expand="block" color="primary" (click)="checkout()">
-      Passer commande
-    </ion-button>
-  </div>
-  </div>
-
-  <!-- Panier vide -->
-  <ng-template #emptyCart>
+  } @else {
     <div class="empty">
       <ion-icon name="cart-outline"></ion-icon>
       <p>Your Cart is empty.</p>
@@ -61,5 +62,5 @@
         Continue shopping
       </ion-button>
     </div>
-  </ng-template>
+  }
 </ion-content>

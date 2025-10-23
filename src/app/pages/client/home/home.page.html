@@ -17,11 +17,13 @@
         <!-- Panier -->
         <ion-button routerLink="/client/cart" fill="clear" class="cart-button">
           <ion-icon name="cart-outline"></ion-icon>
-          <ion-badge *ngIf="cartCount > 0" class="cart-badge">{{ cartCount }}</ion-badge>
+          @if (cartCount > 0) {
+            <ion-badge class="cart-badge">{{ cartCount }}</ion-badge>
+          }
         </ion-button>
 
-        <!-- ✅ Si connecté -->
-        <ng-container *ngIf="isLoggedIn; else notConnected">
+        <!--  Si connecté -->
+        @if (isLoggedIn) {
           <ion-button routerLink="/client/profile" fill="clear">
             <ion-icon name="person-outline"></ion-icon>
           </ion-button>
@@ -29,14 +31,12 @@
           <ion-button fill="clear" color="danger" (click)="logout()">
             <ion-icon name="log-out-outline"></ion-icon>
           </ion-button>
-        </ng-container>
-
-        <!-- 🚪 Sinon : bouton Connexion -->
-        <ng-template #notConnected>
+        } @else {
+          <!-- 🚪 Sinon : bouton Connexion -->
           <ion-button fill="clear" routerLink="/login">
             <ion-icon name="log-in-outline"></ion-icon>
           </ion-button>
-        </ng-template>
+        }
       </div>
     </div>
   </ion-toolbar>
@@ -44,25 +44,25 @@
 
 <!-- 🔹 Contenu principal -->
 <ion-content class="home-content">
-  <div class="section" *ngFor="let cat of categories">
-    <div class="section-header">
-      <h2>{{ cat.name }}</h2>
-    </div>
-
-    <div class="products-row" *ngIf="filteredProductsByCategory[cat.slug]?.length; else noResult">
-      <div
-        class="product-card"
-        *ngFor="let p of filteredProductsByCategory[cat.slug]"
-        (click)="goToDetails(p)"
-      >
-        <img [src]="p.imageUrl || 'assets/img-placeholder.png'" alt="{{ p.name }}" />
-        <p class="name">{{ p.name }}</p>
-        <p class="price">{{ p.price }} DT</p>
+  @for (cat of categories; track cat.slug) {
+    <div class="section">
+      <div class="section-header">
+        <h2>{{ cat.name }}</h2>
       </div>
-    </div>
 
-    <ng-template #noResult>
-      <p class="no-products">Aucun produit trouvé dans cette catégorie</p>
-    </ng-template>
-  </div>
+      @if (filteredProductsByCategory[cat.slug]?.length) {
+        <div class="products-row">
+          @for (p of filteredProductsByCategory[cat.slug]; track p.id) {
+            <div class="product-card" (click)="goToDetails(p)">
+              <img [src]="p.imageUrl || 'assets/img-placeholder.png'" alt="{{ p.name }}" />
+              <p class="name">{{ p.name }}</p>
+              <p class="price">{{ p.price }} DT</p>
+            </div>
+          }
+        </div>
+      } @else {
+        <p class="no-products">Aucun produit trouvé dans cette catégorie</p>
+      }
+    </div>
+  }
 </ion-content>

@@ -5,32 +5,31 @@
 </ion-header>
 
 <ion-content class="orders-content">
+  @if (orders$ | async; as orders) {
+    <ion-list class="orders-list">
+      @for (o of orders; track o.id) {
+        <ion-item lines="none" class="order-item">
+          <ion-label>
+            <h2>Commande </h2>
+            <p><strong>Status :</strong> {{ o.status }}</p>
+            <p><strong>Total :</strong> {{ o.total }} DT</p>
+          </ion-label>
 
-  <ion-list *ngIf="orders$ | async as orders; else empty" class="orders-list">
-    <ion-item *ngFor="let o of orders" lines="none" class="order-item">
-      <ion-label>
-        <h2>Commande </h2>
-        <p><strong>Status :</strong> {{ o.status }}</p>
-        <p><strong>Total :</strong> {{ o.total }} DT</p>
-      </ion-label>
-
-      <div class="actions">
-          <ion-button fill="clear" color="danger" size="small" (click)="deleteOrder(o.id!)">
-          <ion-icon name="trash-outline"></ion-icon>
-        </ion-button>
-      </div>
-    </ion-item>
-  </ion-list>
-
-  <ng-template #empty>
+          <div class="actions">
+            <ion-button fill="clear" color="danger" size="small" (click)="deleteOrder(o.id!)">
+              <ion-icon name="trash-outline"></ion-icon>
+            </ion-button>
+          </div>
+        </ion-item>
+      }
+    </ion-list>
+  } @else {
     <div class="empty-state">
       <p>Aucune commande trouvée</p>
-      
     </div>
-  </ng-template>
+  }
 
-        <ion-button routerLink="/client/home" color="primary">
-        Continue shopping
-      </ion-button>
-
+  <ion-button routerLink="/client/home" color="primary">
+    Continue shopping
+  </ion-button>
 </ion-content>

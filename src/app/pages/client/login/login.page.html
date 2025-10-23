@@ -21,20 +21,23 @@
 
       <div class="button-container">
         <ion-button expand="block" class="main-button" (click)="login()" [disabled]="isLoading">
-          <ion-spinner name="crescent" *ngIf="isLoading"></ion-spinner>
-          <span *ngIf="!isLoading">Se connecter</span>
+          @if (isLoading) {
+            <ion-spinner name="crescent"></ion-spinner>
+          } @else {
+            <span>Se connecter</span>
+          }
         </ion-button>
-
-        
       </div>
 
       <div class="register-link">
         <p>Pas encore de compte ? <a routerLink="/register">Inscrivez-vous ici</a></p>
       </div>
 
-      <ion-text color="danger" *ngIf="errorMessage">
-        <p class="error-message">{{ errorMessage }}</p>
-      </ion-text>
+      @if (errorMessage) {
+        <ion-text color="danger">
+          <p class="error-message">{{ errorMessage }}</p>
+        </ion-text>
+      }
     </form>
   </div>
 </ion-content>

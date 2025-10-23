@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Product } from '../models/product.model';
 import { CartItem } from '../models/CartItem';
-
-
 
 @Injectable({
   providedIn: 'root',
@@ -11,60 +10,59 @@ import { CartItem } from '../models/CartItem';
 export class CartService {
   private cart: CartItem[] = [];
 
-  // Observables
-  private cartSubject = new BehaviorSubject<CartItem[]>([]);
-  cart$ = this.cartSubject.asObservable();
+  // ReplaySubject émet la dernière valeur à tout nouvel abonné
+  private cartSubject = new ReplaySubject<CartItem[]>(1);
 
-  private cartCount = new BehaviorSubject<number>(0);
-  cartCount$ = this.cartCount.asObservable();
+  // Observable public
+  cart$: Observable<CartItem[]> = this.cartSubject.asObservable();
+  cartCount$: Observable<number> = this.cart$.pipe(
+    map(items => items.reduce((sum, item) => sum + item.quantity, 0))
+  );
 
-  constructor() {}
+  constructor() {
+    // émettre la valeur initiale
+    this.emitCart();
+  }
 
-  // Ajouter un produit au panier 
+  /** Ajouter un produit au panier */
   addToCart(product: Product, quantity: number = 1) {
-    const existing = this.cart.find((item) => item.product.id === product.id);
+    const existing = this.cart.find(i => i.product.id === product.id);
     if (existing) {
       existing.quantity += quantity;
     } else {
       this.cart.push({ product, quantity });
     }
-    this.updateCart();
+    this.emitCart();
   }
 
-  // Supprimer un produit du panier 
+  /** Supprimer un produit du panier */
   removeFromCart(productId: string) {
-    this.cart = this.cart.filter((item) => item.product.id !== productId);
-    this.updateCart();
+    this.cart = this.cart.filter(i => i.product.id !== productId);
+    this.emitCart();
   }
 
-  // Vider le panier 
-  clearCart() {
-    this.cart = [];
-    this.updateCart();
-  }
-
-  // Mettre à jour la quantité d’un article 
+  /** Mettre à jour la quantité d’un produit */
   updateQuantity(productId: string, quantity: number) {
-    const index = this.cart.findIndex((i) => i.product.id === productId);
-    if (index !== -1) {
-      this.cart[index].quantity = quantity;
-      this.updateCart();
+    const item = this.cart.find(i => i.product.id === productId);
+    if (item) {
+      item.quantity = quantity;
+      this.emitCart();
     }
   }
 
-  // Obtenir tous les articles 
+  /** Vider le panier */
+  clearCart() {
+    this.cart = [];
+    this.emitCart();
+  }
+
+  /** Obtenir les articles actuels (optionnel pour usage synchrone) */
   getCartItems(): CartItem[] {
-    return this.cart;
+    return [...this.cart];
   }
 
-  //Calculer le total d’articles 
-  getTotalItems(): number {
-    return this.cart.reduce((sum, item) => sum + item.quantity, 0);
-  }
-
-  //Met à jour les observables 
-  private updateCart() {
-    this.cartSubject.next([...this.cart]); // met à jour les items
-    this.cartCount.next(this.getTotalItems()); // met à jour le badge
+  /** Mettre à jour l’Observable */
+  private emitCart() {
+    this.cartSubject.next([...this.cart]);
   }
 }

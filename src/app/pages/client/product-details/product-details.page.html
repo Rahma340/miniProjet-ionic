@@ -13,49 +13,50 @@
     <ion-buttons slot="end">
       <ion-button routerLink="/client/cart" fill="clear" class="cart-button">
         <ion-icon name="cart-outline"></ion-icon>
-        <ion-badge *ngIf="cartCount > 0" class="cart-badge">
-          {{ cartCount }}
-        </ion-badge>
+        @if (cartCount > 0) {
+          <ion-badge class="cart-badge">
+            {{ cartCount }}
+          </ion-badge>
+        }
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<!-- 🌿 Disposition style Amazon -->
-<ion-content *ngIf="product; else loading" class="white-background">
-  <div class="product-details-container">
-    <!-- 🖼️ Image du produit -->
-    <div class="image-section">
-      <img
-        [src]="product.imageUrl || 'assets/img-placeholder.png'"
-        [alt]="product.name"
-      />
-    </div>
 
-    <!-- 📄 Description et infos -->
-    <div class="info-section">
-      <h1 class="product-title">{{ product.name }}</h1>
-
-      <div class="price-row">
-        <span class="price">{{ product.price | number: '1.2-2' }} DT</span>
+@if (product) {
+  <ion-content class="white-background">
+    <div class="product-details-container">
+    
+      <div class="image-section">
+        <img
+          [src]="product.imageUrl || 'assets/img-placeholder.png'"
+          [alt]="product.name"
+        />
       </div>
 
-      <p class="description">
-        {{ product.description || 'Aucune description disponible.' }}
-      </p>
+      <div class="info-section">
+        <h1 class="product-title">{{ product.name }}</h1>
 
-      <div class="actions">
-        <ion-button expand="block" (click)="addToCart()" class="add-btn">
-          <ion-icon name="cart-outline" slot="start"></ion-icon>
-          Ajouter au panier
-        </ion-button>
+        <div class="price-row">
+          <span class="price">{{ product.price | number: '1.2-2' }} DT</span>
+        </div>
+
+        <p class="description">
+          {{ product.description || 'Aucune description disponible.' }}
+        </p>
+
+        <div class="actions">
+          <ion-button expand="block" (click)="addToCart()" class="add-btn">
+            <ion-icon name="cart-outline" slot="start"></ion-icon>
+            Ajouter au panier
+          </ion-button>
+        </div>
       </div>
     </div>
-  </div>
-</ion-content>
-
-<ng-template #loading>
+  </ion-content>
+} @else {
   <div class="loading-container">
     <ion-spinner name="crescent"></ion-spinner>
   </div>
-</ng-template>
+}
