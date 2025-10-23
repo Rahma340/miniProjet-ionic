@@ -1,3 +1,4 @@
+
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
@@ -8,114 +9,80 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-
-  @if (loading) {
-    <div class="ion-text-center ion-padding">
-      <ion-spinner name="crescent"></ion-spinner>
-      <p>Chargement...</p>
-    </div>
-  } @else {
-
-    <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
-
-      <!--  Nom du produit -->
-      <ion-item>
-        <ion-label position="stacked" class="label-bold">Nom du produit *</ion-label>
-        <ion-input
-          formControlName="name"
-          type="text"
-          placeholder="Ex: Pullover"
-        ></ion-input>
-      </ion-item>
-
-      @if (productForm.get('name')?.touched && productForm.get('name')?.invalid) {
-        <ion-text color="danger">
-          <p class="error-message">{{ getErrorMessage('name') }}</p>
-        </ion-text>
-      }
-
-      <!-- Description -->
-      <ion-item>
-        <ion-label position="stacked" class="label-bold">Description *</ion-label>
-        <ion-textarea
-          formControlName="description"
-          rows="4"
-          placeholder="Décrivez le produit..."
-        ></ion-textarea>
-      </ion-item>
-
-      @if (productForm.get('description')?.touched && productForm.get('description')?.invalid) {
-        <ion-text color="danger">
-          <p class="error-message">{{ getErrorMessage('description') }}</p>
-        </ion-text>
-      }
-
-      <!-- Prix -->
-      <ion-item>
-        <ion-label position="stacked" class="label-bold">Prix (DT) *</ion-label>
-        <ion-input
-          formControlName="price"
-          type="number"
-          step="0.01"
-          placeholder="0.00"
-        ></ion-input>
-      </ion-item>
-
-      @if (productForm.get('price')?.touched && productForm.get('price')?.invalid) {
-        <ion-text color="danger">
-          <p class="error-message">{{ getErrorMessage('price') }}</p>
-        </ion-text>
-      }
-
-      <!--  Stock -->
-      <ion-item>
-        <ion-label position="stacked" class="label-bold">Stock *</ion-label>
-        <ion-input
-          formControlName="stock"
-          type="number"
-          placeholder="0"
-        ></ion-input>
-      </ion-item>
-
-      @if (productForm.get('stock')?.touched && productForm.get('stock')?.invalid) {
-        <ion-text color="danger">
-          <p class="error-message">{{ getErrorMessage('stock') }}</p>
-        </ion-text>
-      }
-
-      <!-- Image -->
-      <ion-item>
-        <ion-label position="stacked" class="label-bold">Image du produit</ion-label>
-        <ion-input
-          formControlName="image"
-          type="url"
-          placeholder="https://..."
-        ></ion-input>
-
-        <ion-button 
-          slot="end" 
-          fill="clear" 
-          color="primary" 
-          (click)="uploadImage()"
-          class="camera-btn"
-        >
-          <ion-icon name="camera-outline"></ion-icon>
-        </ion-button>
-      </ion-item>
-
-      <input type="file" #fileInput hidden accept="image/*" (change)="onImageSelected($event)">
-
-      @if (productForm.get('image')?.value) {
-        <div class="image-preview">
-          <img 
-            [src]="productForm.get('image')?.value" 
-            alt="Aperçu"
-            (error)="$event.target.src='https://via.placeholder.com/150'"
-          >
-        </div>
-      }
-
-      <!-- Catégorie -->
+  <ion-spinner *ngIf="loading" name="crescent"></ion-spinner>
+  
+  <form [formGroup]="productForm" (ngSubmit)="onSubmit()" *ngIf="!loading">
+    <!-- Nom du produit -->
+    <ion-item>
+      <ion-label position="stacked" class="label-bold">Nom du produit *</ion-label>
+      <ion-input
+        formControlName="name"
+        type="text"
+        placeholder="Ex: Pullover"
+      ></ion-input>
+    </ion-item>
+    <ion-text color="danger" *ngIf="productForm.get('name')?.touched && productForm.get('name')?.invalid">
+      <p class="error-message">{{ getErrorMessage('name') }}</p>
+    </ion-text>
+    
+    <!-- Description -->
+    <ion-item>
+      <ion-label position="stacked" class="label-bold">Description *</ion-label>
+      <ion-textarea
+        formControlName="description"
+        rows="4"
+        placeholder="Décrivez le produit..."
+      ></ion-textarea>
+    </ion-item>
+    <ion-text color="danger" *ngIf="productForm.get('description')?.touched && productForm.get('description')?.invalid">
+      <p class="error-message">{{ getErrorMessage('description') }}</p>
+    </ion-text>
+    
+    <!-- Prix -->
+    <ion-item>
+      <ion-label position="stacked" class="label-bold">Prix (Dinar Tunisien) *</ion-label>
+      <ion-input
+        formControlName="price"
+        type="number"
+        step="0.01"
+        placeholder="0.00"
+      ></ion-input>
+    </ion-item>
+    <ion-text color="danger" *ngIf="productForm.get('price')?.touched && productForm.get('price')?.invalid">
+      <p class="error-message">{{ getErrorMessage('price') }}</p>
+    </ion-text>
+    
+    <!-- Stock -->
+    <ion-item>
+      <ion-label position="stacked" class="label-bold">Stock *</ion-label>
+      <ion-input
+        formControlName="stock"
+        type="number"
+        placeholder="0"
+      ></ion-input>
+    </ion-item>
+    <ion-text color="danger" *ngIf="productForm.get('stock')?.touched && productForm.get('stock')?.invalid">
+      <p class="error-message">{{ getErrorMessage('stock') }}</p>
+    </ion-text>
+    
+    <!-- Image - URL ou Upload -->
+    <ion-item>
+      <ion-label position="stacked" class="label-bold">Image du produit</ion-label>
+      <ion-input
+        formControlName="image"
+        type="url"
+        placeholder="https://..."
+      ></ion-input>
+      <ion-button 
+        slot="end"
+        fill="clear"
+        color="primary"
+        (click)="uploadImage()"
+        class="camera-btn"
+      >
+        <ion-icon name="camera-outline"></ion-icon>
+      </ion-button>
+    </ion-item>
       <ion-item>
         <ion-label position="stacked">Catégorie *</ion-label>
         <ion-select formControlName="category" placeholder="Choisissez une catégorie">
@@ -126,29 +93,74 @@
           }
         </ion-select>
       </ion-item>
-
-      <!-- Boutons -->
-      <div class="button-group">
-        <ion-button
-          expand="block"
-          color="primary"
-          type="submit"
-          [disabled]="loading"
-        >
-          {{ isEditMode ? 'Modifier le produit' : 'Créer le produit' }}
-        </ion-button>
-
-        <ion-button
-          expand="block"
-          color="medium"
-          (click)="cancel()"
-          [disabled]="loading"
-        >
-          Annuler
-        </ion-button>
-      </div>
-
-    </form>
-  }
-
+    
+    <!-- Input fichier caché -->
+    <input 
+      type="file" 
+      #fileInput 
+      hidden 
+      accept="image/*" 
+      (change)="onImageSelected($event)"
+    >
+    
+    <!-- Aperçu de l'image -->
+    <div class="image-preview" *ngIf="productForm.get('image')?.value">
+      <img 
+        [src]="productForm.get('image')?.value"
+        alt="Aperçu"
+        (error)="$event.target.src='https://via.placeholder.com/150'"
+      >
+    </div>
+    
+    <!-- Boutons -->
+    <div class="button-group">
+      <ion-button
+        expand="block"
+        color="primary"
+        type="submit"
+        [disabled]="loading"
+      >
+        {{ isEditMode ? 'Modifier le produit' : 'Créer le produit' }}
+      </ion-button>
+      
+      <ion-button
+        expand="block"
+        color="medium"
+        (click)="cancel()"
+        [disabled]="loading"
+      >
+        Annuler
+      </ion-button>
+    </div>
+  </form>
 </ion-content>
+
+<!-- 🎥 Modal Webcam (visible seulement sur Web/PC) -->
+<div class="webcam-overlay" *ngIf="showWebcam">
+  <h2 class="webcam-title"> Prendre une photo</h2>
+  
+ <video 
+  id="webcamVideo" 
+  class="webcam-video" 
+  autoplay 
+  playsinline
+  style="width: 100%; max-width: 640px; height: 480px; background: #000;"
+></video>
+
+  
+  <div class="webcam-buttons">
+    <button 
+      class="webcam-btn capture-btn" 
+      (click)="capturePhoto()"
+    >
+      Capturer
+    </button>
+    
+    <button 
+      class="webcam-btn cancel-btn" 
+      (click)="closeWebcam()"
+    >
+      Annuler
+    </button>
+  </div>
+</div>

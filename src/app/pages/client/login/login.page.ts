@@ -32,7 +32,10 @@ export class LoginPage implements OnInit {
 
   async showSuccessToast(role: string) {
     const toast = await this.toastController.create({
-      message: role === 'admin' ? 'Bienvenue Administrateur !' : 'Connexion réussie ',
+      message:
+        role === 'admin'
+          ? 'Bienvenue, Administrateur 👑'
+          : 'Connexion réussie 👋',
       duration: 2000,
       position: 'top',
       color: 'success',
@@ -48,7 +51,7 @@ export class LoginPage implements OnInit {
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(this.email)) {
+    if (!emailRegex.test(this.email.trim())) {
       this.errorMessage = 'Format d\'email invalide';
       return false;
     }
@@ -63,29 +66,43 @@ export class LoginPage implements OnInit {
     this.errorMessage = '';
 
     try {
-      const userCredential = await this.authService.login(this.email, this.password);
+      const userCredential = await this.authService.login(
+        this.email.trim(),
+        this.password
+      );
+
       const user = userCredential.user;
+      if (!user) throw new Error('Utilisateur introuvable');
 
       const userData = await this.firestoreService.getDocumentData('users', user.uid);
-      await this.showSuccessToast(userData?.role || 'user');
+      const role = userData?.role || 'user';
+      await this.showSuccessToast(role);
 
-      // Redirection selon le rôle
-      if (userData?.role === 'admin') {
-        this.router.navigate(['/admin/products']);
+      // ✅ Redirection selon le rôle
+      if (role === 'admin') {
+        this.router.navigate(['/admin/list-product']);
       } else {
         this.router.navigate(['/client/home']);
       }
 
     } catch (error: any) {
       console.error('Erreur Firebase Auth:', error);
-      if (error.code === 'auth/user-not-found') {
-        this.errorMessage = 'Aucun compte trouvé avec cet email';
-      } else if (error.code === 'auth/wrong-password') {
-        this.errorMessage = 'Mot de passe incorrect';
-      } else if (error.code === 'auth/invalid-email') {
-        this.errorMessage = 'Format d\'email invalide';
-      } else {
-        this.errorMessage = 'Erreur de connexion';
+
+      switch (error.code) {
+        case 'auth/user-not-found':
+          this.errorMessage = 'Aucun compte trouvé avec cet email';
+          break;
+        case 'auth/wrong-password':
+          this.errorMessage = 'Mot de passe incorrect';
+          break;
+        case 'auth/invalid-email':
+          this.errorMessage = 'Format d\'email invalide';
+          break;
+        case 'auth/too-many-requests':
+          this.errorMessage = 'Trop de tentatives, veuillez réessayer plus tard';
+          break;
+        default:
+          this.errorMessage = 'Erreur de connexion, veuillez réessayer';
       }
     } finally {
       this.isLoading = false;

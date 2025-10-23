@@ -5,6 +5,7 @@ import { CartService } from 'src/app/services/cart.service';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { Firestore, doc, getDoc } from '@angular/fire/firestore';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -29,6 +30,8 @@ export class HomePage implements OnInit {
   filteredProductsByCategory: { [key: string]: Product[] } = {};
   searchQuery = '';
 
+  private subscriptions: Subscription[] = [];
+
   constructor(
     private productService: ProductService,
     private cartService: CartService,
@@ -39,14 +42,14 @@ export class HomePage implements OnInit {
 
   ngOnInit() {
     // 🔹 Mise à jour du panier
-    this.cartService.cartCount$.subscribe(count => (this.cartCount = count));
+    const cartSub = this.cartService.cartCount$.subscribe(count => (this.cartCount = count));
+    this.subscriptions.push(cartSub);
 
     // 🔹 Vérification de l'utilisateur connecté
-    this.authService.currentUser$.subscribe(async user => {
+    const authSub = this.authService.currentUser$.subscribe(async user => {
       this.isLoggedIn = !!user;
 
       if (user?.uid) {
-        // On récupère le document utilisateur
         const userRef = doc(this.firestore, `users/${user.uid}`);
         const userSnap = await getDoc(userRef);
 
@@ -63,14 +66,20 @@ export class HomePage implements OnInit {
         }
       }
     });
+    this.subscriptions.push(authSub);
 
-    // 🔹 Charger les produits par catégorie
-    this.categories.forEach(cat => {
-      this.productService.getProductsByCategory(cat.name).subscribe(data => {
-        this.productsByCategory[cat.slug] = data;
-        this.filteredProductsByCategory[cat.slug] = data;
+    // 🔹 S’abonner aux produits par catégorie
+    const productsSub = this.productService.productsByCategory$.subscribe(allProducts => {
+      this.productsByCategory = {};
+      this.filteredProductsByCategory = {};
+
+      this.categories.forEach(cat => {
+        const products = allProducts[cat.name] || [];
+        this.productsByCategory[cat.slug] = products;
+        this.filteredProductsByCategory[cat.slug] = products;
       });
     });
+    this.subscriptions.push(productsSub);
   }
 
   logout() {
@@ -89,12 +98,16 @@ export class HomePage implements OnInit {
     this.filteredProductsByCategory = {};
     Object.keys(this.productsByCategory).forEach(slug => {
       this.filteredProductsByCategory[slug] = this.productsByCategory[slug].filter(p =>
-        p.name?.toLowerCase().includes(value)
+        p.name.toLowerCase().includes(value)
       );
     });
   }
 
   goToDetails(product: Product) {
     this.router.navigate(['/client/product-details', product.id]);
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 }

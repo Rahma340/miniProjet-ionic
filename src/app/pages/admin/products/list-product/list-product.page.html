@@ -1,0 +1,68 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Liste des Produits</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon name="log-out-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="container">
+    <div class="table-header">
+      <ion-button color="primary" (click)="addProduct()">
+        <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon>
+        Ajouter Produit
+      </ion-button>
+    </div>
+
+    <ion-spinner *ngIf="loading"></ion-spinner>
+
+    <table *ngIf="!loading && products.length > 0">
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Nom</th>
+          <th>Description</th>
+          <th>Catégorie</th>
+          <th>Prix</th>
+          <th>Stock</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of products">
+          <td>
+            <img
+              [src]="product.imageUrl || 'assets/placeholder.png'"
+              alt="{{ product.name }}"
+              class="product-img"
+              ($event)="($any($event.target).src='https://via.placeholder.com/50')"
+
+            />
+          </td>
+          <td>{{ product.name }}</td>
+          <td>{{ product.description || '-' }}</td>
+          <td>{{ product.category || '-' }}</td>
+          <td>{{ product.price || 0 }} TND</td>
+          <td>{{ product.stock || 0 }}</td>
+          <td>
+            <ion-button size="small" color="warning" (click)="editProduct(product.id)">
+              <ion-icon name="pencil-outline"></ion-icon>
+            </ion-button>
+            <ion-button size="small" color="danger" (click)="deleteProduct(product.id, product.name)">
+              <ion-icon name="trash-outline"></ion-icon>
+            </ion-button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div *ngIf="!loading && products.length === 0" class="empty-state">
+      <ion-icon name="cube-outline"></ion-icon>
+      <p>Aucun produit disponible</p>
+    </div>
+  </div>
+</ion-content>

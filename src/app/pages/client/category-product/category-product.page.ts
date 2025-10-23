@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Product } from 'src/app/models/product.model';
 import { ProductService } from 'src/app/services/product.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-category-product',
@@ -9,11 +10,13 @@ import { ProductService } from 'src/app/services/product.service';
   styleUrls: ['./category-product.page.scss'],
   standalone: false,
 })
-export class CategoryProductPage implements OnInit {
+export class CategoryProductPage implements OnInit, OnDestroy {
   categorySlug = '';
   categoryName = '';
   products: Product[] = [];
   loading = true;
+
+  private subscription?: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -23,7 +26,6 @@ export class CategoryProductPage implements OnInit {
   ngOnInit() {
     this.categorySlug = this.route.snapshot.paramMap.get('category') || '';
 
-    // Map pour convertir le slug en nom de catégorie Firestore
     const categoryMap: Record<string, string> = {
       'electronique': 'Électronique',
       'mode-accessoires': 'Mode & Accessoires',
@@ -34,16 +36,14 @@ export class CategoryProductPage implements OnInit {
 
     this.categoryName = categoryMap[this.categorySlug] || this.categorySlug;
 
-    // 🔹 Charge les produits de cette catégorie
-    this.productService.getProductsByCategory(this.categoryName).subscribe({
-      next: (data) => {
-        this.products = data;
-        this.loading = false;
-      },
-      error: (err) => {
-        console.error('Erreur Firestore:', err);
-        this.loading = false;
-      }
+    // 🔹 S'abonner aux produits par catégorie
+    this.subscription = this.productService.productsByCategory$.subscribe(allProducts => {
+      this.products = allProducts[this.categoryName] || [];
+      this.loading = false;
     });
+  }
+
+  ngOnDestroy() {
+    this.subscription?.unsubscribe();
   }
 }
