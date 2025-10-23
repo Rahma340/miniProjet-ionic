@@ -1,53 +1,43 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 import { ProductService } from 'src/app/services/product.service';
-
-interface Product {
-  id: string;
-  name: string;
-  description?: string;
-  price?: number;
-  stock?: number;
-  category?: string;
-  imageUrl?: string;
-}
+import { Product } from 'src/app/models/product.model';
+import { AlertController, ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-list-product',
   templateUrl: './list-product.page.html',
   styleUrls: ['./list-product.page.scss'],
-  standalone: false,
+  standalone: false
 })
-export class ListProductPage implements OnInit {
+export class ListProductPage implements OnInit, OnDestroy {
   products: Product[] = [];
   loading = false;
+
+  private productsSub?: Subscription;
 
   constructor(
     private router: Router,
     private productService: ProductService,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private toastController: ToastController
   ) {}
 
   ngOnInit() {
-    this.loadProducts();
-  }
-
-  ionViewWillEnter() {
-    this.loadProducts();
-  }
-
-  async loadProducts() {
     this.loading = true;
-    try {
-      const data = await this.productService.getProducts();
-      this.products = Array.isArray(data) ? data : [];
-    } catch (err) {
-      console.error('Erreur chargement produits:', err);
-      this.products = [];
-    } finally {
+    // S'abonner au BehaviorSubject
+    this.productsSub = this.productService.productsByCategory$.subscribe(data => {
+      // Créer une liste plate à partir des catégories
+      // Aplatir les tableaux de produits par catégorie sans flat()
+this.products = Object.values(data).reduce((acc, val) => acc.concat(val), [] as Product[]);
+
       this.loading = false;
-    }
+    });
+  }
+
+  ngOnDestroy() {
+    this.productsSub?.unsubscribe();
   }
 
   addProduct() {
@@ -55,16 +45,13 @@ export class ListProductPage implements OnInit {
   }
 
   editProduct(productId: string) {
-    if (!productId) return;
-    this.router.navigate(['/admin/edit-product', productId]);
+    this.router.navigate(['/admin/add-product', productId]);
   }
 
-  async deleteProduct(productId: string, productName: string) {
-    if (!productId) return;
-
+  async deleteProduct(product: Product) {
     const alert = await this.alertController.create({
       header: 'Confirmer la suppression',
-      message: `Voulez-vous vraiment supprimer "${productName}" ?`,
+      message: `Voulez-vous vraiment supprimer "${product.name}" ?`,
       buttons: [
         { text: 'Annuler', role: 'cancel' },
         {
@@ -72,20 +59,21 @@ export class ListProductPage implements OnInit {
           role: 'destructive',
           handler: async () => {
             try {
-              await this.productService.deleteProduct(productId);
-              await this.loadProducts();
+              await this.productService.deleteProduct(product.id!);
+              const toast = await this.toastController.create({
+                message: 'Produit supprimé avec succès',
+                duration: 2000,
+                color: 'success'
+              });
+              await toast.present();
             } catch (err) {
-              console.error('Erreur suppression produit:', err);
+              console.error('Erreur suppression produit', err);
             }
-          },
-        },
-      ],
+          }
+        }
+      ]
     });
 
     await alert.present();
-  }
-
-  logout() {
-    this.router.navigate(['/login']);
   }
 }
