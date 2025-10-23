@@ -93,31 +93,38 @@ export class ProductPage implements OnInit, OnDestroy {
     });
   }
 
-  async onSubmit() {
-    if (!this.productForm.valid) {
-      Object.keys(this.productForm.controls).forEach(key => this.productForm.get(key)?.markAsTouched());
-      await this.showToast('Veuillez remplir tous les champs requis', 'warning');
-      return;
-    }
-
-    this.loading = true;
-    const productData = this.productForm.value;
-    try {
-      if (this.isEditMode && this.productId) {
-        await this.productService.updateProduct(this.productId, productData);
-        await this.showToast('Produit mis à jour avec succès', 'success');
-      } else {
-        await this.productService.addProduct(productData);
-        await this.showToast('Produit créé avec succès', 'success');
-      }
-      setTimeout(() => this.router.navigate(['/admin/list-product']), 1000);
-
-    } catch (err: any) {
-      console.error(err);
-      await this.showToast('Erreur lors de l\'opération', 'danger');
-      this.loading = false;
-    }
+async onSubmit() {
+  if (!this.productForm.valid) {
+    Object.keys(this.productForm.controls).forEach(key => this.productForm.get(key)?.markAsTouched());
+    await this.showToast('Veuillez remplir tous les champs requis', 'warning');
+    return;
   }
+
+  this.loading = true;
+  const productData = this.productForm.value;
+
+  try {
+    const productToSave = {
+      ...productData,
+      imageUrl: productData.image // ⚡ S'assurer que l'image du formulaire devient imageUrl
+    };
+
+    if (this.isEditMode && this.productId) {
+      await this.productService.updateProduct(this.productId, productToSave);
+      await this.showToast('Produit mis à jour avec succès', 'success');
+    } else {
+      await this.productService.addProduct(productToSave);
+      await this.showToast('Produit créé avec succès', 'success');
+    }
+
+    setTimeout(() => this.router.navigate(['/admin/list-product']), 1000);
+  } catch (err: any) {
+    console.error(err);
+    await this.showToast('Erreur lors de l\'opération', 'danger');
+    this.loading = false;
+  }
+}
+
 
 cancel() {
   this.router.navigate(['/admin/list-product']);
@@ -143,67 +150,66 @@ cancel() {
   }
 
   // --------------------------- GESTION DES IMAGES ---------------------------
-  async uploadImage() {
-    if (this.isMobile) {
-      const actionSheet = await this.actionSheetController.create({
-        header: 'Ajouter une photo',
-        buttons: [
-          {
-            text: 'Prendre une photo',
-            icon: 'camera',
-            handler: async () => {
-              try {
-                const img = await this.photoSer.takePicture();
-                if (img) {
-                  this.productForm.patchValue({ image: img });
-                  this.cdr.detectChanges();
-                  await this.showToast('Photo capturée avec succès', 'success');
-                }
-              } catch {
-                await this.showToast("Vous n'avez pas pris de photo", 'danger');
+async uploadImage() {
+  if (this.isMobile) {
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Ajouter une photo',
+      buttons: [
+        {
+          text: 'Prendre une photo',
+          icon: 'camera',
+          handler: async () => {
+            try {
+              const img = await this.photoSer.takePicture();
+              if (img) {
+                // ⚡ Mettre l'image dans le formulaire
+                this.productForm.patchValue({ image: img });
+                this.cdr.detectChanges();
+                await this.showToast('Photo capturée avec succès', 'success');
               }
+            } catch {
+              await this.showToast("Vous n'avez pas pris de photo", 'danger');
             }
-          },
-          {
-            text: 'Choisir depuis la galerie',
-            icon: 'image',
-            handler: async () => {
-              try {
-                const tabImages = await this.photoSer.selectionnerPhotos();
-                if (tabImages?.photos?.length) {
-                  this.productForm.patchValue({ image: tabImages.photos[0].webPath });
-                  this.cdr.detectChanges();
-                  await this.showToast('Image sélectionnée avec succès', 'success');
-                }
-              } catch {
-                await this.showToast("Erreur lors de la sélection", 'danger');
+          }
+        },
+        {
+          text: 'Choisir depuis la galerie',
+          icon: 'image',
+          handler: async () => {
+            try {
+              const tabImages = await this.photoSer.selectionnerPhotos();
+              if (tabImages?.photos?.length) {
+                const img = tabImages.photos[0].webPath; // ⚡ Utiliser webPath pour affichage dans <img>
+                this.productForm.patchValue({ image: img });
+                this.cdr.detectChanges();
+                await this.showToast('Image sélectionnée avec succès', 'success');
               }
+            } catch {
+              await this.showToast("Erreur lors de la sélection", 'danger');
             }
-          },
-          { text: 'Annuler', icon: 'close-outline', role: 'cancel' }
-        ]
-      });
-      await actionSheet.present();
-    } else {
-      const actionSheet = await this.actionSheetController.create({
-        header: 'Ajouter une photo',
-        buttons: [
-          {
-            text: 'Prendre une photo avec la webcam',
-            icon: 'camera-outline',
-            handler: () => this.openWebcam()
-          },
-          {
-            text: 'Importer depuis PC',
-            icon: 'cloud-upload-outline',
-            handler: () => this.fileInput.nativeElement.click()
-          },
-          { text: 'Annuler', icon: 'close-outline', role: 'cancel' }
-        ]
-      });
-      await actionSheet.present();
-    }
+          }
+        },
+        { text: 'Annuler', icon: 'close-outline', role: 'cancel' }
+      ]
+    });
+    await actionSheet.present();
+  } else {
+    // PC / Desktop
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Ajouter une photo',
+      buttons: [
+        {
+          text: 'Importer depuis PC',
+          icon: 'cloud-upload-outline',
+          handler: () => this.fileInput.nativeElement.click()
+        },
+        { text: 'Annuler', icon: 'close-outline', role: 'cancel' }
+      ]
+    });
+    await actionSheet.present();
   }
+}
+
 
   // --------------------------- WEBCAM ---------------------------
   async openWebcam() {

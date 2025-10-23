@@ -62,41 +62,36 @@ export class ProductService {
   }
 
   /** Ajouter un produit */
-  async addProduct(product: Product) {
-    const productsRef = collection(this.firestore, this.collectionName);
+async addProduct(product: Product) {
+  const productsRef = collection(this.firestore, this.collectionName);
 
-    // Création d'un objet Product complet
-    const newProduct: Product = {
-      ...product,
-      id: '', // temporaire, sera remplacé par docRef.id
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      name: product.name,
-      description: product.description,
-      price: product.price,
-      stock: product.stock,
-      category: product.category,
-      imageUrl: product.imageUrl || ''
-    };
+  const newProduct: Product = {
+    ...product,
+    id: '',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    imageUrl: product.imageUrl || '' // ⚡ S'assurer que imageUrl est défini
+  };
 
-    // Ajouter dans Firestore (dates converties en string)
-    const docRef = await addDoc(productsRef, {
-      ...newProduct,
-      createdAt: newProduct.createdAt?.toString(),
-      updatedAt: newProduct.updatedAt?.toString()
-    });
+  const docRef = await addDoc(productsRef, {
+    ...newProduct,
+    createdAt: newProduct.createdAt!.toString(),
+    updatedAt: newProduct.updatedAt!.toString()
+  });
 
-    // Mettre à jour l'id et le BehaviorSubject
-    newProduct.id = docRef.id;
-    const current = this.productsByCategorySubject.value;
-    const category = newProduct.category;
-    const updatedCategory: Product[] = current[category]
-      ? [...current[category], newProduct]
-      : [newProduct];
-    this.productsByCategorySubject.next({ ...current, [category]: updatedCategory });
+  newProduct.id = docRef.id;
 
-    return docRef;
-  }
+  // ⚡ Mettre à jour le BehaviorSubject
+  const current = this.productsByCategorySubject.value;
+  const category = newProduct.category;
+  const updatedCategory: Product[] = current[category]
+    ? [...current[category], newProduct]
+    : [newProduct];
+  this.productsByCategorySubject.next({ ...current, [category]: updatedCategory });
+
+  return docRef;
+}
+
 
   /** Mettre à jour un produit */
   async updateProduct(id: string, product: Partial<Product>) {

@@ -1,46 +1,103 @@
 .container {
   padding: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #222; /* Texte sombre */
+  background-color: #fff; /* Fond clair */
+  min-height: 80vh;
 }
 
+/* Bouton Ajouter produit */
 .table-header {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 16px;
+
+  ion-button {
+    --background: #1976d2; /* bleu foncé */
+    --color: #fff;
+    border-radius: 6px;
+    padding: 0 12px;
+    font-weight: 600;
+  }
 }
 
+/* Tableau des produits */
 table {
   width: 100%;
   border-collapse: collapse;
-  text-align: left;
+  background-color: #fff;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 
   th, td {
-    border: 1px solid #ddd;
-    padding: 8px;
+    padding: 12px 8px;
+    text-align: left;
+    color: #222; /* Texte sombre */
   }
 
   th {
     background-color: #f2f2f2;
+    font-weight: 600;
+    color: #111; /* Encore plus sombre pour les en-têtes */
   }
 
-  .product-img {
-    width: 50px;
-    height: 50px;
-    object-fit: cover;
-    border-radius: 4px;
+  tr {
+    transition: background 0.2s;
+    &:hover {
+      background-color: #f9f9f9;
+    }
   }
 
-  td ion-button {
-    margin-right: 4px;
+  td {
+    vertical-align: middle;
+
+    .product-img {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+
+    ion-button {
+      margin-right: 4px;
+      --padding-start: 4px;
+      --padding-end: 4px;
+      --border-radius: 4px;
+    }
   }
 }
 
+/* État vide */
 .empty-state {
   text-align: center;
-  color: #999;
+  color: #555; /* texte sombre mais moins intense */
   margin-top: 40px;
 
   ion-icon {
     font-size: 64px;
     margin-bottom: 16px;
+    color: #aaa;
+  }
+
+  p {
+    font-size: 18px;
+    margin-bottom: 16px;
+  }
+
+  ion-button {
+    --background: #1976d2;
+    --color: #fff;
+    border-radius: 6px;
+  }
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+  table th, table td {
+    padding: 16px 12px;
   }
 }
