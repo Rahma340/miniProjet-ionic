@@ -13,45 +13,53 @@
   <ion-grid>
     <ion-row>
       <ion-col size="12">
-        <ion-spinner *ngIf="loading" name="crescent"></ion-spinner>
+        @if (loading) {
+          <ion-spinner name="crescent"></ion-spinner>
+        }
 
-        <table *ngIf="!loading && products.length > 0" class="product-table">
-          <thead>
-            <tr>
-              <th>Image</th>
-              <th>Nom</th>
-              <th>Description</th>
-              <th>Prix</th>
-              <th>Stock</th>
-              <th>Catégorie</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let product of products">
-              <td>
-                <img [src]="product.imageUrl || 'https://via.placeholder.com/50'" width="50" height="50" />
-              </td>
-              <td>{{ product.name }}</td>
-              <td>{{ product.description }}</td>
-              <td>{{ product.price | number:'1.2-2' }} TND</td>
-              <td>{{ product.stock }}</td>
-              <td>{{ product.category }}</td>
-              <td>
-                <ion-button size="small" color="warning" (click)="editProduct(product.id!)">
-                  <ion-icon slot="icon-only" name="pencil-outline"></ion-icon>
-                </ion-button>
-                <ion-button size="small" color="danger" (click)="deleteProduct(product)">
-                  <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
-                </ion-button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        @if (!loading && products.length > 0) {
+          <table class="product-table">
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Nom</th>
+                <th>Description</th>
+                <th>Prix</th>
+                <th>Stock</th>
+                <th>Catégorie</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (product of products; track product.id) {
+                <tr>
+                  <td>
+                    <img [src]="product.imageUrl || 'https://via.placeholder.com/50'" width="50" height="50" />
+                  </td>
+                  <td>{{ product.name }}</td>
+                  <td>{{ product.description }}</td>
+                  <td>{{ product.price | number:'1.2-2' }} TND</td>
+                  <td>{{ product.stock }}</td>
+                  <td>{{ product.category }}</td>
+                  <td>
+                    <ion-button size="small" color="warning" (click)="editProduct(product.id!)">
+                      <ion-icon slot="icon-only" name="pencil-outline"></ion-icon>
+                    </ion-button>
+                    <ion-button size="small" color="danger" (click)="deleteProduct(product)">
+                      <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+                    </ion-button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        }
 
-        <div *ngIf="!loading && products.length === 0" class="empty-state">
-          Aucun produit disponible
-        </div>
+        @if (!loading && products.length === 0) {
+          <div class="empty-state">
+            Aucun produit disponible
+          </div>
+        }
       </ion-col>
     </ion-row>
   </ion-grid>
