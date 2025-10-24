@@ -1,0 +1,26 @@
+
+<ion-content class="ion-padding">
+  @if (orders$ | async; as orders) {
+    @if (orders.length > 0) {
+      <ion-list>
+        @for (order of orders; track order.id) {
+          <ion-item lines="full">
+            <ion-icon name="receipt-outline" slot="start" color="primary"></ion-icon>
+            <ion-label>
+              <h2>Client : {{ order.userName }}</h2>
+              <p>Total : {{ order.total | number:'1.0-2' }} DT</p>
+              <p>Date : {{ formatDate(order.createdAt) }}</p>
+            </ion-label>
+          </ion-item>
+        }
+      </ion-list>
+    } @else {
+      <div class="empty-state">
+        <ion-icon name="clipboard-outline"></ion-icon>
+        <p>Aucune commande trouvée</p>
+      </div>
+    }
+  } @else {
+    <ion-spinner name="dots" color="primary"></ion-spinner>
+  }
+</ion-content>

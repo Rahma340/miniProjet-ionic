@@ -9,104 +9,130 @@
   }
 }
 
-/* --- Page container --- */
-.orders-page {
+/* --- Container --- */
+.cart-page {
   --background: #eaeded;
   padding: 16px;
 }
 
-.orders-container {
+.cart-container {
   background: #fff;
   padding: 20px;
   border-radius: 4px;
+}
+
+.cart-items {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-/* --- Each order block --- */
-.order-item {
+/* --- Each Product --- */
+.cart-item {
   display: flex;
   justify-content: space-between;
   border-bottom: 1px solid #ddd;
-  padding-bottom: 12px;
-
-  &:last-child {
-    border-bottom: none;
-  }
+  padding-bottom: 16px;
+  flex-wrap: wrap;
 }
 
-.order-info {
+.item-image img {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+}
+
+.item-details {
   flex: 1;
-
-  h2 {
-    font-size: 16px;
-    font-weight: 600;
-    color: #09ecec;
-    margin-bottom: 6px;
-  }
-
-  p {
-    font-size: 14px;
-    color: #09ecec;
-    margin: 4px 0;
-  }
-
-  .status span {
-    text-transform: capitalize;
-    font-weight: 600;
-  }
-
-  .status .pending {
-    color: #d17d00;
-  }
-
-  .status .completed {
-    color: #007600;
-  }
-
-  .status .cancelled {
-    color: #b00020;
-  }
-
-  .total {
-    font-weight: 600;
-    color: #09ecec;
-  }
-
-  .date {
-    font-size: 13px;
-    color: #09ecec;
-  }
+  padding: 0 20px;
 }
 
-/* --- Actions (voir/supprimer) --- */
-.order-actions {
+.item-details h2 {
+  font-size: 16px;
+  font-weight: 500;
+  color: #0f1111;
+  margin-bottom: 6px;
+}
+
+.in-stock {
+  color: #007600;
+  font-size: 13px;
+}
+
+.color {
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+/* --- Actions --- */
+.actions {
   display: flex;
   align-items: center;
   gap: 6px;
+  flex-wrap: wrap;
+}
 
-  ion-button {
-    --padding-start: 0;
-    --padding-end: 0;
-    --background: transparent;
-    color: #007185;
+.quantity-control {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 30px;
+  padding: 2px 8px;
+  background: #fff;
+}
 
-    ion-icon {
-      font-size: 22px;
-    }
-  }
+.quantity-control ion-button {
+  --padding-start: 0;
+  --padding-end: 0;
+  --background: transparent;
+  color: #111;
+  font-size: 18px;
+}
 
-  ion-button[color='danger'] {
-    --color: #b12704;
+.quantity-control span {
+  width: 25px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.action-link {
+  color: #007185;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.divider {
+  color: #ccc;
+  margin: 0 4px;
+}
+
+/* --- Price --- */
+.item-price {
+  font-size: 18px;
+  font-weight: 600;
+  color: #111;
+  white-space: nowrap;
+}
+
+/* --- Subtotal --- */
+.subtotal {
+  text-align: right;
+  font-size: 16px;
+  font-weight: 500;
+  margin-top: 20px;
+
+  strong {
+    font-weight: 700;
+    color: #111;
   }
 }
 
-/* --- Empty state --- */
+/* --- Empty cart --- */
 .empty {
   text-align: center;
   margin-top: 60px;
-  color: #ebd2d2;
+  color: #555;
 
   ion-icon {
     font-size: 60px;
@@ -122,5 +148,82 @@
   ion-button {
     --border-radius: 6px;
     font-weight: 600;
+  }
+}
+
+/* --- Checkout --- */
+.checkout-container {
+  padding: 16px;
+  text-align: center;
+
+  ion-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  ion-button {
+    --background: #ffd814;
+    --background-hover: #f7ca00;
+    color: #111;
+    font-weight: 600;
+    border-radius: 8px;
+    text-transform: none;
+  }
+}
+
+/* === Responsive === */
+@media screen and (max-width: 480px) {
+  .cart-item {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .item-image img {
+    width: 120px;
+    height: 120px;
+  }
+
+  .item-details {
+    padding: 10px 0;
+  }
+
+  .item-price {
+    font-size: 16px;
+  }
+
+  .quantity-control span {
+    width: 20px;
+  }
+}
+
+@media screen and (min-width: 481px) and (max-width: 768px) {
+  .cart-item {
+    flex-wrap: wrap;
+  }
+
+  .item-image img {
+    width: 140px;
+    height: 140px;
+  }
+
+  .item-details {
+    padding: 0 10px;
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .cart-item {
+    flex-wrap: nowrap;
+  }
+
+  .item-image img {
+    width: 150px;
+    height: 150px;
+  }
+
+  .item-details {
+    padding: 0 20px;
   }
 }

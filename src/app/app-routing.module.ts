@@ -21,12 +21,21 @@ const routes: Routes = [
       path: 'add-product',
       loadChildren: () => import('./pages/admin/products/product/product.module').then(m => m.ProductPageModule)
     },
+ {
+  path: 'order',
+  loadChildren: () =>
+    import('./pages/admin/orders/order/order.module').then(
+      m => m.OrdersAdminPageModule  
+    )
+}
+,
     
     {
       path: '',
       redirectTo: 'list-product',
       pathMatch: 'full'
-    }
+    },
+
   ]
 }
 ,
@@ -81,6 +90,8 @@ const routes: Routes = [
     path: 'dashboard',
     loadChildren: () => import('./pages/admin/dashboard/dashboard.module').then( m => m.DashboardPageModule)
   },
+
+
 
 ];
 

@@ -84,6 +84,7 @@ export class HomePage implements OnInit {
 
   logout() {
     this.authService.logout();
+    this.router.navigateByUrl('/login')
   }
 
   onSearch(event: any) {

@@ -1,0 +1,39 @@
+ion-toolbar {
+  --background: var(--ion-color-primary);
+  color: white;
+  text-align: center;
+}
+
+.order-icon {
+  font-size: 28px;
+  color: var(--ion-color-primary);
+}
+
+ion-item {
+  border-radius: 10px;
+  background: #f8f9fa;
+  margin-bottom: 10px;
+}
+
+h2 {
+  font-weight: bold;
+  color: #333;
+}
+
+p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.empty {
+  text-align: center;
+  margin-top: 30px;
+  font-size: 16px;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+}

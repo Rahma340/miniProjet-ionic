@@ -14,7 +14,7 @@
 
       <!-- 🔹 Icônes à droite -->
       <div class="header-icons">
-        <!-- Panier -->
+        <!-- 🛒 Panier -->
         <ion-button routerLink="/client/cart" fill="clear" class="cart-button">
           <ion-icon name="cart-outline"></ion-icon>
           @if (cartCount > 0) {
@@ -22,25 +22,29 @@
           }
         </ion-button>
 
-        <!--  Si connecté -->
+        <!-- 👤 Gestion connexion -->
         @if (isLoggedIn) {
-          <ion-button routerLink="/client/profile" fill="clear">
-            <ion-icon name="person-outline"></ion-icon>
+          <!-- Profil -->
+          <ion-button routerLink="/client/orders" fill="clear">
+            <ion-icon name="card-outline"></ion-icon>
           </ion-button>
 
+          <!-- Déconnexion -->
           <ion-button fill="clear" color="danger" (click)="logout()">
             <ion-icon name="log-out-outline"></ion-icon>
           </ion-button>
         } @else {
-          <!-- 🚪 Sinon : bouton Connexion -->
-          <ion-button fill="clear" routerLink="/login">
-            <ion-icon name="log-in-outline"></ion-icon>
-          </ion-button>
-        }
+  <!-- Connexion -->
+  <ion-button fill="clear" routerLink="/login">
+    <ion-icon name="person-outline"></ion-icon>
+  </ion-button>
+}
+
       </div>
     </div>
   </ion-toolbar>
 </ion-header>
+
 
 <!-- 🔹 Contenu principal -->
 <ion-content class="home-content">

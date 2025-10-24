@@ -108,7 +108,7 @@
 
 /* === Carte produit === */
 .product-card {
-  flex: 0 0 180px; /* ✅ largeur augmentée */
+  flex: 0 0 180px; 
   background: #fff;
   border-radius: 6px;
   text-align: center;
@@ -122,7 +122,7 @@
 
   img {
     width: 100%;
-    height: 220px; /* ✅ image agrandie */
+    height: 220px; 
     object-fit: contain;
     margin-bottom: 8px;
   }
@@ -147,4 +147,115 @@
   color: #777;
   padding: 10px 0;
 }
+
+/* === Bloc de catégorie === */
+.section {
+  background: #fff;
+  margin: 10px 0;
+  padding: 10px 0;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 12px 8px 12px;
+
+  h2 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #111;
+  }
+
+  .see-more {
+    font-size: 13px;
+    color: #007185;
+    text-transform: none;
+  }
+}
+
+/* === Grille responsive de produits === */
+.products-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 15px;
+  padding: 0 10px;
+}
+
+/* === Carte produit === */
+.product-card {
+  background: #fff;
+  border-radius: 6px;
+  text-align: center;
+  padding: 10px 8px;
+  transition: transform 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  img {
+    width: 100%;
+    height: 180px;
+    object-fit: contain;
+    margin-bottom: 8px;
+  }
+
+  .name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #222;
+    min-height: 32px;
+    margin-bottom: 3px;
+  }
+
+  .price {
+    color: #b12704;
+    font-weight: 700;
+    font-size: 15px;
+  }
+}
+
+/* === Aucun produit === */
+.no-products {
+  text-align: center;
+  font-size: 13px;
+  color: #777;
+  padding: 10px 0;
+}
+
+/* === Media Queries pour petits écrans === */
+@media screen and (max-width: 480px) {
+  .products-row {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+
+  .product-card img {
+    height: 140px;
+  }
+}
+
+@media screen and (min-width: 481px) and (max-width: 768px) {
+  .products-row {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+
+  .product-card img {
+    height: 160px;
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .products-row {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
+
+  .product-card img {
+    height: 180px;
+  }
+}
+
 

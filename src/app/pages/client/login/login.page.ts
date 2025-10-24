@@ -34,8 +34,8 @@ export class LoginPage implements OnInit {
     const toast = await this.toastController.create({
       message:
         role === 'admin'
-          ? 'Bienvenue, Administrateur 👑'
-          : 'Connexion réussie 👋',
+          ? 'Bienvenue, Administrateur '
+          : 'Connexion réussie ',
       duration: 2000,
       position: 'top',
       color: 'success',
@@ -78,7 +78,7 @@ export class LoginPage implements OnInit {
       const role = userData?.role || 'user';
       await this.showSuccessToast(role);
 
-      // ✅ Redirection selon le rôle
+      //  Redirection selon le rôle
       if (role === 'admin') {
         this.router.navigate(['/admin']);
       } else {

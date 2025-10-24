@@ -1,120 +1,353 @@
 .dashboard-content {
   .dashboard-container {
     display: flex;
-    min-height: 100vh;
+    flex-direction: row;
+    height: 100vh; // Utiliser toute la hauteur de la vue
 
     .sidebar {
-      width: 280px;
-      background: var(--ion-color-light);
-      border-right: 1px solid var(--ion-color-light-shade);
-      padding: 16px 0;
+      width: 220px;
+      background-color: #1f2937;
+      color: #fff;
+      flex-shrink: 0;
+      overflow-y: auto; // Scroll si nécessaire
 
       ion-item {
         --background: transparent;
-        --border-radius: 8px;
-        margin: 4px 12px;
-        
-        &.active {
-          --background: var(--ion-color-primary);
-          --color: white;
-          
-          ion-icon {
-            color: white;
-          }
-        }
-        
+        color: #fff;
+
         ion-icon {
-          color: var(--ion-color-medium);
+          color: #fff;
         }
-        
-        ion-badge {
-          margin-left: auto;
+
+        &:hover {
+          background-color: #374151;
         }
       }
     }
 
     .main-dashboard {
       flex: 1;
-      padding: 20px;
-      background: var(--ion-background-color);
-      
-      .dashboard-home {
+      padding: 24px;
+      background-color: #f3f4f6;
+      overflow: auto; // Scroll général
+
+      .container {
         max-width: 1200px;
         margin: 0 auto;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #222;
+        background-color: #fff;
+        border-radius: 8px;
+        padding: 24px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        min-height: calc(100vh - 48px); // S'adapte à la hauteur disponible
       }
 
-      .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 16px;
-        margin-bottom: 24px;
+      .table-header {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 16px;
+        gap: 12px; // Utiliser gap pour l'espacement
+        flex-wrap: wrap;
 
-        .stat-card {
-          text-align: center;
-          transition: transform 0.2s ease;
+        ion-button {
+          --background: #1976d2;
+          --color: #fff;
+          border-radius: 6px;
+          padding: 0 16px;
+          font-weight: 600;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+          transition: transform 0.2s, background 0.2s;
 
           &:hover {
             transform: translateY(-2px);
-          }
-
-          ion-icon {
-            font-size: 2.5rem;
-            margin-bottom: 12px;
-          }
-
-          h3 {
-            font-size: 2rem;
-            font-weight: bold;
-            margin: 8px 0;
-            color: var(--ion-color-dark);
-          }
-
-          p {
-            color: var(--ion-color-medium);
-            margin: 0;
+            --background: #115293;
           }
         }
       }
 
-      .quick-actions {
-        margin-bottom: 24px;
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        background-color: #fff;
 
-        .actions-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-          gap: 12px;
+        th, td {
+          padding: 14px 12px;
+          text-align: left;
+          color: #222;
+          border-bottom: 1px solid #e5e7eb;
+        }
+
+        th {
+          background-color: #e5e7eb;
+          font-weight: 600;
+          color: #111;
+          position: sticky;
+          top: 0; // Fixer l'en-tête lors du défilement
+        }
+
+        tr {
+          transition: background 0.2s;
+          
+          &:hover {
+            background-color: #f9fafb;
+          }
+
+          &:last-child td {
+            border-bottom: none;
+          }
+        }
+
+        td {
+          vertical-align: middle;
+
+          .product-img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+          }
+
+          ion-button {
+            margin-right: 6px;
+            --padding-start: 6px;
+            --padding-end: 6px;
+            --border-radius: 4px;
+
+            &:last-child {
+              margin-right: 0;
+            }
+          }
         }
       }
 
-      .recent-activity {
-        ion-item {
-          --padding-start: 0;
-          --inner-padding-end: 0;
+      .empty-state {
+        text-align: center;
+        color: #555;
+        padding: 60px 20px;
+
+        ion-icon {
+          font-size: 64px;
+          margin-bottom: 16px;
+          color: #bbb;
+        }
+
+        p {
+          font-size: 16px;
+          margin-bottom: 16px;
+        }
+
+        ion-button {
+          --background: #1976d2;
+          --color: #fff;
+          border-radius: 6px;
+          padding: 8px 16px;
         }
       }
     }
   }
 
-  /* Responsive Design */
-  @media (max-width: 768px) {
+  /* ------------------------ TABLETTES (768px - 1024px) ------------------------ */
+  @media (max-width: 1024px) {
     .dashboard-container {
-      flex-direction: column;
-
       .sidebar {
-        width: 100%;
-        order: 2;
+        width: 200px; // Réduire légèrement la sidebar
       }
 
       .main-dashboard {
-        order: 1;
-        padding: 16px;
-        
-        .stats-grid {
-          grid-template-columns: 1fr;
+        padding: 20px;
+
+        .container {
+          padding: 20px;
         }
-        
-        .actions-grid {
-          grid-template-columns: 1fr;
+
+        table {
+          th, td {
+            padding: 12px 10px;
+            font-size: 14px;
+          }
+
+          .product-img {
+            width: 45px;
+            height: 45px;
+          }
+        }
+      }
+    }
+  }
+
+  /* ------------------------ TABLETTES PETITES (768px et moins) ------------------------ */
+  @media (max-width: 768px) {
+    .dashboard-container {
+      flex-direction: column;
+      height: auto;
+      min-height: 100vh;
+
+      .sidebar {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        overflow-x: auto;
+        padding: 8px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+
+        ion-item {
+          white-space: nowrap;
+          flex-shrink: 0;
+          margin-right: 8px;
+        }
+      }
+
+      .main-dashboard {
+        padding: 16px;
+
+        .container {
+          padding: 16px;
+          min-height: auto;
+        }
+
+        .table-header {
+          justify-content: center;
+          gap: 8px;
+
+          ion-button {
+            flex: 1;
+            min-width: 120px;
+          }
+        }
+
+        table {
+          display: block;
+          overflow-x: auto;
+          white-space: nowrap;
+
+          th, td {
+            padding: 10px 8px;
+            font-size: 13px;
+          }
+
+          .product-img {
+            width: 40px;
+            height: 40px;
+          }
+        }
+
+        .empty-state {
+          padding: 40px 16px;
+
+          ion-icon {
+            font-size: 56px;
+          }
+
+          p {
+            font-size: 15px;
+          }
+        }
+      }
+    }
+  }
+
+  /* ------------------------ MOBILE (480px et moins) ------------------------ */
+  @media (max-width: 480px) {
+    .dashboard-container {
+      .main-dashboard {
+        padding: 12px;
+
+        .container {
+          padding: 12px;
+          border-radius: 6px;
+        }
+
+        .table-header {
+          flex-direction: column;
+          gap: 8px;
+
+          ion-button {
+            width: 100%;
+            margin: 0;
+          }
+        }
+
+        table {
+          th, td {
+            padding: 8px 6px;
+            font-size: 12px;
+          }
+
+          // Cacher certaines colonnes sur mobile
+          th:nth-child(3), // Description
+          td:nth-child(3) {
+            display: none;
+          }
+
+          .product-img {
+            width: 35px;
+            height: 35px;
+          }
+
+          ion-button {
+            --padding-start: 4px;
+            --padding-end: 4px;
+            
+            ion-icon {
+              font-size: 14px;
+            }
+          }
+        }
+
+        .empty-state {
+          padding: 30px 12px;
+
+          ion-icon {
+            font-size: 48px;
+          }
+
+          p {
+            font-size: 14px;
+          }
+
+          ion-button {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+
+  /* ------------------------ TRÈS PETITS ÉCRANS (360px et moins) ------------------------ */
+  @media (max-width: 360px) {
+    .dashboard-container {
+      .main-dashboard {
+        padding: 8px;
+
+        .container {
+          padding: 10px;
+        }
+
+        table {
+          th, td {
+            padding: 6px 4px;
+            font-size: 11px;
+          }
+
+          // Cacher plus de colonnes sur très petits écrans
+          th:nth-child(2), // Nom
+          td:nth-child(2),
+          th:nth-child(6), // Catégorie
+          td:nth-child(6) {
+            display: none;
+          }
+
+          .product-img {
+            width: 30px;
+            height: 30px;
+          }
         }
       }
     }
