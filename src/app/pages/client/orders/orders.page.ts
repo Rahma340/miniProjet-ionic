@@ -30,14 +30,21 @@ export class OrdersPage implements OnInit {
   ) {}
 
   ngOnInit() {
+    // Récupérer l'UID actuel de l'utilisateur connecté
     const uid = this.auth.getCurrentUid();
-    if (!uid) return;
+    if (!uid) return; // Aucun utilisateur connecté
 
+    // Référence à la collection orders
     const ordersRef = collection(this.firestore, 'orders');
+
+    // Créer la requête Firestore avec uid comme valeur primitive
     const q = query(ordersRef, where('userId', '==', uid));
+
+    // Récupérer les données de la collection sous forme d'Observable
     this.orders$ = collectionData(q, { idField: 'id' }) as Observable<Order[]>;
   }
 
+  /** Supprimer une commande */
   async deleteOrder(id: string) {
     const alert = await this.alertCtrl.create({
       header: 'Confirmer',

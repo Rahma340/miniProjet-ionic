@@ -106,7 +106,7 @@ async onSubmit() {
   try {
     const productToSave = {
       ...productData,
-      imageUrl: productData.image // ⚡ S'assurer que l'image du formulaire devient imageUrl
+      imageUrl: productData.image 
     };
 
     if (this.isEditMode && this.productId) {

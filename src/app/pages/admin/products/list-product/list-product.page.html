@@ -1,9 +1,15 @@
-
-
 <ion-content>
   <ion-grid>
     <ion-row>
       <ion-col size="12">
+        <!-- Bouton Ajouter en haut -->
+        <div class="add-button-container">
+          <ion-button color="primary" (click)="addProduct()">
+            <ion-icon slot="start" name="add-outline"></ion-icon>
+            Ajouter un produit
+          </ion-button>
+        </div>
+
         <!-- Spinner pendant le chargement -->
         @if (loading) {
           <ion-spinner name="crescent"></ion-spinner>
@@ -35,14 +41,7 @@
                   <td>{{ product.stock }}</td>
                   <td>{{ product.category }}</td>
                   <td>
-                    <!-- Boutons modification et suppression -->
-                      <ion-button size="small" color="warning" (click)="addProduct()">
-                      <ion-icon slot="icon-only" name="add-outline"></ion-icon>
-                    </ion-button>
-
-                    <ion-button size="small" color="warning" (click)="editProduct(product.id!)">
-                      <ion-icon slot="icon-only" name="pencil-outline"></ion-icon>
-                    </ion-button>
+                    <!-- Bouton suppression seulement -->
                     <ion-button size="small" color="danger" (click)="deleteProduct(product)">
                       <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
                     </ion-button>
@@ -57,9 +56,6 @@
         @if (!loading && products.length === 0) {
           <div class="empty-state">
             Aucun produit disponible
-            <ion-button (click)="addProduct()">
-              <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon>
-            </ion-button>
           </div>
         }
       </ion-col>

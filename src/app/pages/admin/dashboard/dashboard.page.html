@@ -11,7 +11,7 @@
 
 <ion-content class="dashboard-content">
   <div class="dashboard-container">
-    <!-- 🔹 Sidebar navigation -->
+    <!-- Sidebar navigation -->
     <ion-list class="sidebar">
       <ion-item 
         routerLink="/admin/dashboard"
@@ -37,29 +37,14 @@
         <ion-label>Voir les commandes</ion-label>
       </ion-item>
 
-      <ion-item 
+      <!-- <ion-item 
         routerLink="/admin/users"
         routerDirection="forward"
         [class.active]="isActive('/admin/users')">
         <ion-icon slot="start" name="people-outline"></ion-icon>
         <ion-label>Utilisateurs</ion-label>
-      </ion-item>
-
-      <ion-item 
-        routerLink="/admin/categories"
-        routerDirection="forward"
-        [class.active]="isActive('/admin/categories')">
-        <ion-icon slot="start" name="folder-outline"></ion-icon>
-        <ion-label>Catégories</ion-label>
-      </ion-item>
-
-      <ion-item 
-        routerLink="/admin/stats"
-        routerDirection="forward"
-        [class.active]="isActive('/admin/stats')">
-        <ion-icon slot="start" name="stats-chart-outline"></ion-icon>
-        <ion-label>Statistiques</ion-label>
-      </ion-item>
+      </ion-item> -->
+  
     </ion-list>
 
     <!-- 🔹 Main dashboard content -->
@@ -101,7 +86,7 @@
             </ion-card>
           </div>
 
-          <!-- 🚀 Actions rapides -->
+          <!-- Actions rapides -->
           <ion-card class="quick-actions">
             <ion-card-header>
               <ion-card-title>Actions Rapides</ion-card-title>
@@ -131,7 +116,7 @@
             </ion-card-content>
           </ion-card>
 
-          <!-- 🕓 Activité récente -->
+          <!--Activité récente -->
           <ion-card class="recent-activity">
             <ion-card-header>
               <ion-card-title>Activité Récente</ion-card-title>

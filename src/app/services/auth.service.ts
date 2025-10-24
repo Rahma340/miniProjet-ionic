@@ -61,7 +61,7 @@ export class AuthService {
           map(docSnap => docSnap.exists() ? docSnap.data() : null)
         )
       )
-    );
+    ); 
   }
 
   /** Déconnexion */

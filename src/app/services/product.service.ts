@@ -70,8 +70,7 @@ async addProduct(product: Product) {
     id: '',
     createdAt: new Date(),
     updatedAt: new Date(),
-    imageUrl: product.imageUrl || '' // ⚡ S'assurer que imageUrl est défini
-  };
+    imageUrl: product.imageUrl || ''};
 
   const docRef = await addDoc(productsRef, {
     ...newProduct,
@@ -81,7 +80,7 @@ async addProduct(product: Product) {
 
   newProduct.id = docRef.id;
 
-  // ⚡ Mettre à jour le BehaviorSubject
+  // Mettre à jour le BehaviorSubject
   const current = this.productsByCategorySubject.value;
   const category = newProduct.category;
   const updatedCategory: Product[] = current[category]

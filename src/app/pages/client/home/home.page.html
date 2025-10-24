@@ -1,10 +1,10 @@
 <ion-header>
   <ion-toolbar class="header-toolbar">
     <div class="header-container">
-      <!-- 🔹 Logo -->
+      <!-- Logo -->
       <ion-title class="logo">E-Shop</ion-title>
 
-      <!-- 🔹 Barre de recherche -->
+      <!-- Barre de recherche -->
       <ion-searchbar
         placeholder="Rechercher un produit..."
         debounce="150"
@@ -12,9 +12,9 @@
         class="search-bar"
       ></ion-searchbar>
 
-      <!-- 🔹 Icônes à droite -->
+      <!-- Icônes à droite -->
       <div class="header-icons">
-        <!-- 🛒 Panier -->
+        <!--  Panier -->
         <ion-button routerLink="/client/cart" fill="clear" class="cart-button">
           <ion-icon name="cart-outline"></ion-icon>
           @if (cartCount > 0) {
@@ -22,7 +22,7 @@
           }
         </ion-button>
 
-        <!-- 👤 Gestion connexion -->
+        <!-- Gestion connexion -->
         @if (isLoggedIn) {
           <!-- Profil -->
           <ion-button routerLink="/client/orders" fill="clear">
@@ -46,7 +46,7 @@
 </ion-header>
 
 
-<!-- 🔹 Contenu principal -->
+<!-- Contenu principal -->
 <ion-content class="home-content">
   @for (cat of categories; track cat.slug) {
     <div class="section">

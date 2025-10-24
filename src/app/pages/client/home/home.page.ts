@@ -23,7 +23,6 @@ export class HomePage implements OnInit {
     { name: 'Mode & Accessoires', slug: 'mode-accessoires', image: 'assets/categories/fashion.jpg' },
     { name: 'Maison & Cuisine', slug: 'maison-cuisine', image: 'assets/categories/home.jpg' },
     { name: 'Beauté & Santé', slug: 'beaute-sante', image: 'assets/categories/beauty.jpg' },
-    { name: 'Sports & Loisirs', slug: 'sports-loisirs', image: 'assets/categories/sport.jpg' },
   ];
 
   productsByCategory: { [key: string]: Product[] } = {};
@@ -41,11 +40,11 @@ export class HomePage implements OnInit {
   ) {}
 
   ngOnInit() {
-    // 🔹 Mise à jour du panier
+    // S’abonne au nombre d’articles du panier
     const cartSub = this.cartService.cartCount$.subscribe(count => (this.cartCount = count));
     this.subscriptions.push(cartSub);
 
-    // 🔹 Vérification de l'utilisateur connecté
+    // Vérification de l'utilisateur connecté
     const authSub = this.authService.currentUser$.subscribe(async user => {
       this.isLoggedIn = !!user;
 
@@ -57,7 +56,7 @@ export class HomePage implements OnInit {
           const data = userSnap.data();
           this.userRole = data['role'] as 'client' | 'admin';
 
-          // 🔸 Redirection automatique selon le rôle
+          // Redirection automatique selon le rôle
           if (this.userRole === 'admin') {
             this.router.navigate(['/admin/products']);
           } else if (this.userRole === 'client') {
@@ -68,12 +67,13 @@ export class HomePage implements OnInit {
     });
     this.subscriptions.push(authSub);
 
-    // 🔹 S’abonner aux produits par catégorie
+    // S’abonner aux produits par catégorie
     const productsSub = this.productService.productsByCategory$.subscribe(allProducts => {
       this.productsByCategory = {};
       this.filteredProductsByCategory = {};
-
+      //On récupère les produits correspondant à la catégorie
       this.categories.forEach(cat => {
+
         const products = allProducts[cat.name] || [];
         this.productsByCategory[cat.slug] = products;
         this.filteredProductsByCategory[cat.slug] = products;
@@ -90,14 +90,16 @@ export class HomePage implements OnInit {
   onSearch(event: any) {
     const value = (event.detail.value || '').toLowerCase();
     this.searchQuery = value;
-
+    //Si value est vide on réinitialise les produits filtrés pour afficher tous les produits
     if (!value) {
       this.filteredProductsByCategory = { ...this.productsByCategory };
       return;
     }
 
     this.filteredProductsByCategory = {};
+    //récupère tous les slugs de catégories
     Object.keys(this.productsByCategory).forEach(slug => {
+    //Pour chaque catégorie on filtre les produits dont le nom contient le texte recherché   
       this.filteredProductsByCategory[slug] = this.productsByCategory[slug].filter(p =>
         p.name.toLowerCase().includes(value)
       );
